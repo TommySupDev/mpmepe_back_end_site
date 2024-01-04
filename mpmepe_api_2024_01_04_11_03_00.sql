@@ -39,6 +39,7 @@ CREATE TABLE `article` (
   `deleted` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `user_ajout_id` int(11) DEFAULT NULL,
   `user_modif_id` int(11) DEFAULT NULL,
+  `slug` longtext COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`id`),
   KEY `IDX_23A0E663E5713E` (`user_ajout_id`),
   KEY `IDX_23A0E6633B55E82` (`user_modif_id`),
@@ -489,8 +490,6 @@ CREATE TABLE `galerie` (
   `user_modif_id` int(11) DEFAULT NULL,
   `code_fichier` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `titre` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `visibility` tinyint(1) NOT NULL,
-  `publication_date` datetime DEFAULT NULL,
   `nb_liaison` int(11) DEFAULT NULL,
   `nb_telechargement` double DEFAULT NULL,
   `taille_fichier` double DEFAULT NULL,
@@ -527,13 +526,14 @@ CREATE TABLE `header` (
   `position` int(11) NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `affichage` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `slog` longtext COLLATE utf8mb4_unicode_ci,
+  `slug` longtext COLLATE utf8mb4_unicode_ci,
   `nb_liaison` int(11) DEFAULT NULL,
   `date_ajout` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
   `date_modif` datetime DEFAULT NULL,
   `deleted` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `user_ajout_id` int(11) DEFAULT NULL,
   `user_modif_id` int(11) DEFAULT NULL,
+  `format_page` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_6E72A8C13E5713E` (`user_ajout_id`),
   KEY `IDX_6E72A8C133B55E82` (`user_modif_id`),
@@ -566,7 +566,7 @@ CREATE TABLE `historique` (
   `date_ajout` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
   `date_modif` datetime DEFAULT NULL,
   `deleted` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `user_id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_EDBFD5ECA76ED395` (`user_id`),
   CONSTRAINT `FK_EDBFD5ECA76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
@@ -603,6 +603,8 @@ CREATE TABLE `menu` (
   `user_modif_id` int(11) DEFAULT NULL,
   `lien` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `position` int(11) NOT NULL,
+  `slug` longtext COLLATE utf8mb4_unicode_ci,
+  `format_page` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_7D053A932EF91FD8` (`header_id`),
   KEY `IDX_7D053A933E5713E` (`user_ajout_id`),
@@ -872,6 +874,8 @@ CREATE TABLE `sous_menu` (
   `user_ajout_id` int(11) DEFAULT NULL,
   `user_modif_id` int(11) DEFAULT NULL,
   `position` int(11) NOT NULL,
+  `slug` longtext COLLATE utf8mb4_unicode_ci,
+  `format_page` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_F30864DFCCD7E912` (`menu_id`),
   KEY `IDX_F30864DF3E5713E` (`user_ajout_id`),
@@ -906,6 +910,7 @@ CREATE TABLE `tag` (
   `date_ajout` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
   `date_modif` datetime DEFAULT NULL,
   `deleted` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nb_liaison` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_389B7833E5713E` (`user_ajout_id`),
   KEY `IDX_389B78333B55E82` (`user_modif_id`),
@@ -1042,4 +1047,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-30 18:46:58
+-- Dump completed on 2024-01-04 11:03:01
