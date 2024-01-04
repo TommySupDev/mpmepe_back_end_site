@@ -28,34 +28,34 @@ use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Component\Uid\Ulid;
 
 #[ORM\Entity(repositoryClass: FilesRepository::class)]
-#[ApiResource(
-    normalizationContext: ['groups' => ['read:Files','read:Entity']],
-    denormalizationContext: ['groups' => ['write:Files','write:Entity']],
-    operations: [
-        new Get(
-            security: "is_granted('ROLE_ADMIN')"
-        ),
-        new GetCollection(
-            security: "is_granted('ROLE_ADMIN')"
-        ),
-//        new Post(
-//            validationContext: ['groups' => ['Default']],
-//            inputFormats: ['multipart' => ['multipart/form-data']],
+//#[ApiResource(
+//    normalizationContext: ['groups' => ['read:Files','read:Entity']],
+//    denormalizationContext: ['groups' => ['write:Files','write:Entity']],
+//    operations: [
+//        new Get(
 //            security: "is_granted('ROLE_ADMIN')"
 //        ),
-//        new Put(
+//        new GetCollection(
 //            security: "is_granted('ROLE_ADMIN')"
 //        ),
-//        new Patch(
-//            security: "is_granted('ROLE_ADMIN')"
-//        ),
-//        new Delete(
-//            security: "is_granted('ROLE_ADMIN')"
-//        )
-    ]
-)]
-#[ApiFilter(OrderFilter::class, properties: ['filename', 'type'])]
-#[ApiFilter(SearchFilter::class, properties: ['deleted' => 'exact'])]
+////        new Post(
+////            validationContext: ['groups' => ['Default']],
+////            inputFormats: ['multipart' => ['multipart/form-data']],
+////            security: "is_granted('ROLE_ADMIN')"
+////        ),
+////        new Put(
+////            security: "is_granted('ROLE_ADMIN')"
+////        ),
+////        new Patch(
+////            security: "is_granted('ROLE_ADMIN')"
+////        ),
+////        new Delete(
+////            security: "is_granted('ROLE_ADMIN')"
+////        )
+//    ]
+//)]
+//#[ApiFilter(OrderFilter::class, properties: ['filename', 'type'])]
+//#[ApiFilter(SearchFilter::class, properties: ['deleted' => 'exact'])]
 class Files
 {
     use EntityTimestampTrait;
