@@ -128,10 +128,12 @@ final class ApiPlatformEventPersonnaliseSubscriber implements EventSubscriberInt
                 $this->entityManager->refresh($historique);
 
                 // Gestion du nbLiaison de User
-                $historique->getUser()->setNbLiaison(
-                    (int) $historique->getUser()->getNbLiaison() + 1
-                );
-                $this->entityManager->flush();
+                if ($historique->getUser() !== null) {
+                    $historique->getUser()->setNbLiaison(
+                        (int) $historique->getUser()->getNbLiaison() + 1
+                    );
+                    $this->entityManager->flush();
+                }
 
             } else {
                 // Cas d'une modification
