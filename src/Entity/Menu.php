@@ -132,6 +132,41 @@ class Menu implements UserOwnedInterface
     ])]
     private ?User $userModif = null;
 
+    /**
+     * Valeurs possibles: interne, externe
+     */
+    #[ORM\Column(length: 255)]
+    #[Groups([
+        'read:Menu',
+        'write:Menu',
+        'read:Header',
+    ])]
+    private ?string $lien = null;
+
+    #[ORM\Column]
+    #[Groups([
+        'read:Menu',
+        'write:Menu',
+        'read:Header',
+    ])]
+    private ?int $position = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups([
+        'read:Menu',
+        'write:Menu',
+        'read:Header',
+    ])]
+    private ?string $slug = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups([
+        'read:Menu',
+        'write:Menu',
+        'read:Header',
+    ])]
+    private ?string $formatPage = null;
+
     public function __construct()
     {
         $this->sousMenus = new ArrayCollection();
@@ -250,6 +285,54 @@ class Menu implements UserOwnedInterface
     public function setFichiers(array $fichiers)
     {
         $this->fichiers = $fichiers;
+        return $this;
+    }
+
+    public function getLien(): ?string
+    {
+        return $this->lien;
+    }
+
+    public function setLien(string $lien): static
+    {
+        $this->lien = $lien;
+
+        return $this;
+    }
+
+    public function getPosition(): ?int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(int $position): static
+    {
+        $this->position = $position;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): static
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getFormatPage(): ?string
+    {
+        return $this->formatPage;
+    }
+
+    public function setFormatPage(?string $formatPage): static
+    {
+        $this->formatPage = $formatPage;
+
         return $this;
     }
 }

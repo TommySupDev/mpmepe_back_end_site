@@ -50,9 +50,9 @@ use Doctrine\ORM\Mapping as ORM;
 //            security: "is_granted('ROLE_ADMIN')"
 //        ),
         new Delete(
-            security: "is_granted('ROLE_ADMIN')",
             controller: DeleteDocumentAction::class,
-            write: false
+            write: false,
+            security: "is_granted('ROLE_ADMIN')",
         )
     ]
 )]
@@ -143,7 +143,7 @@ class Document implements UserOwnedInterface
         'read:Document',
         'read:DocumentCategorieDocument',
     ])]
-    private ?float $extensionFichier = null;
+    private ?string $extensionFichier = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: true)]
@@ -316,12 +316,12 @@ class Document implements UserOwnedInterface
         return $this;
     }
 
-    public function getExtensionFichier(): ?float
+    public function getExtensionFichier(): ?string
     {
         return $this->extensionFichier;
     }
 
-    public function setExtensionFichier(?float $extensionFichier): static
+    public function setExtensionFichier(?string $extensionFichier): static
     {
         $this->extensionFichier = $extensionFichier;
 

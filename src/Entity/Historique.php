@@ -83,7 +83,7 @@ class Historique
     private ?int $idTable = null;
 
     #[ORM\ManyToOne(inversedBy: 'historiques')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     #[Groups([
         'read:Historique',
     ])]

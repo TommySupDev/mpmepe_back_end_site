@@ -97,6 +97,33 @@ class SousMenu implements UserOwnedInterface
     ])]
     private ?User $userModif = null;
 
+    #[ORM\Column]
+    #[Groups([
+        'read:SousMenu',
+        'write:SousMenu',
+        'read:Header',
+        'read:Menu',
+    ])]
+    private ?int $position = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups([
+        'read:SousMenu',
+        'write:SousMenu',
+        'read:Header',
+        'read:Menu',
+    ])]
+    private ?string $slug = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups([
+        'read:SousMenu',
+        'write:SousMenu',
+        'read:Header',
+        'read:Menu',
+    ])]
+    private ?string $formatPage = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -122,6 +149,42 @@ class SousMenu implements UserOwnedInterface
     public function setMenu(?Menu $menu): static
     {
         $this->menu = $menu;
+
+        return $this;
+    }
+
+    public function getPosition(): ?int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(int $position): static
+    {
+        $this->position = $position;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): static
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getFormatPage(): ?string
+    {
+        return $this->formatPage;
+    }
+
+    public function setFormatPage(?string $formatPage): static
+    {
+        $this->formatPage = $formatPage;
 
         return $this;
     }

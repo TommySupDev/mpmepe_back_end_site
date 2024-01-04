@@ -3,6 +3,7 @@
 namespace App\EventSubscriber;
 
 use ApiPlatform\Symfony\EventListener\EventPriorities;
+use App\Entity\ArticleGalerie;
 use App\Entity\Dirigeant;
 use App\Entity\Historique;
 use App\Entity\Menu;
@@ -44,6 +45,10 @@ final class ApiPlatformEventPersonnaliseSubscriber implements EventSubscriberInt
             return;
         }
 
+        if (\gettype($entity) !== "object") {
+            return;
+        }
+
         $reflectionClass = new \ReflectionClass($entity::class);
         $userAjoutSet = $reflectionClass->hasProperty('userAjout');
 
@@ -66,6 +71,10 @@ final class ApiPlatformEventPersonnaliseSubscriber implements EventSubscriberInt
         }
 
         $entity = $event->getControllerResult();
+
+        if ($entity instanceof \stdClass) {
+            return;
+        }
 
         $nomTable = explode('\\', $entity::class);
         $nomTable = $nomTable[(count($nomTable) - 1)];

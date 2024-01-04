@@ -100,7 +100,7 @@ class Header implements UserOwnedInterface
         'write:Header',
         'read:PageHeader',
     ])]
-    private ?string $slog = null;
+    private ?string $slug = null;
 
     #[ORM\OneToMany(mappedBy: 'header', targetEntity: Menu::class)]
     #[Groups([
@@ -127,6 +127,14 @@ class Header implements UserOwnedInterface
         'read:Header',
     ])]
     private ?User $userModif = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups([
+        'read:Header',
+        'write:Header',
+        'read:PageHeader',
+    ])]
+    private ?string $formatPage = null;
 
     public function __construct()
     {
@@ -185,14 +193,14 @@ class Header implements UserOwnedInterface
         return $this;
     }
 
-    public function getSlog(): ?string
+    public function getSlug(): ?string
     {
-        return $this->slog;
+        return $this->slug;
     }
 
-    public function setSlog(string $slog): static
+    public function setSlug(string $slug): static
     {
-        $this->slog = $slog;
+        $this->slug = $slug;
 
         return $this;
     }
@@ -265,6 +273,18 @@ class Header implements UserOwnedInterface
                 $pageHeader->setHeader(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFormatPage(): ?string
+    {
+        return $this->formatPage;
+    }
+
+    public function setFormatPage(?string $formatPage): static
+    {
+        $this->formatPage = $formatPage;
 
         return $this;
     }

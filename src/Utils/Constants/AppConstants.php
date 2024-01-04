@@ -16,6 +16,8 @@ class AppConstants
 
     final public const USER_FOLDER = 'uploads/user/';
 
+    final public const GALERIE_FOLDER = 'uploads/galerie/';
+
     final public const DEFAULT_FOLDER = 'uploads/default/';
 
 }

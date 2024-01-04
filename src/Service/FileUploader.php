@@ -120,6 +120,8 @@ class FileUploader
                 return AppConstants::PAGE_FOLDER;
             case 'user':
                 return AppConstants::USER_FOLDER;
+            case 'galerie':
+                return AppConstants::GALERIE_FOLDER;
             default:
                 return AppConstants::DEFAULT_FOLDER;
         }

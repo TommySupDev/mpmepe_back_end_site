@@ -2,12 +2,13 @@
 
 namespace App\Entity;
 
+use App\Repository\ArticleRepository;
+use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\Controller\AjouterArticleAction;
 use App\Controller\Delete\DeleteArticleAction;
 use App\InterfacePersonnalise\UserOwnedInterface;
-use App\Repository\ArticleRepository;
 use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
@@ -21,8 +22,9 @@ use ApiPlatform\Metadata\Put;
 use App\Service\ConvertValueToBoolService;
 use App\Utils\Traits\EntityTimestampTrait;
 use App\Utils\Traits\UserAjoutModifTrait;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -58,7 +60,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     fields: 'titre'
 )]
 #[ApiFilter(OrderFilter::class, properties: ['titre'])]
-#[ApiFilter(SearchFilter::class, properties: ['deleted' => 'exact', 'userAjout' => 'exact', 'userModif' => 'exact'])]
+#[ApiFilter(SearchFilter::class, properties: [
+    'deleted' => 'exact',
+    'userAjout' => 'exact',
+    'userModif' => 'exact'
+])]
 class Article implements UserOwnedInterface
 {
     use EntityTimestampTrait;
@@ -134,76 +140,6 @@ class Article implements UserOwnedInterface
     ])]
     private ?int $category = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Groups([
-        'read:Article',
-        'write:Article',
-    ])]
-    private ?string $tag1 = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Groups([
-        'read:Article',
-        'write:Article',
-    ])]
-    private ?string $tag2 = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Groups([
-        'read:Article',
-        'write:Article',
-    ])]
-    private ?string $tag3 = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Groups([
-        'read:Article',
-        'write:Article',
-    ])]
-    private ?string $tag4 = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Groups([
-        'read:Article',
-        'write:Article',
-    ])]
-    private ?string $tag5 = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Groups([
-        'read:Article',
-        'write:Article',
-    ])]
-    private ?string $tag6 = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Groups([
-        'read:Article',
-        'write:Article',
-    ])]
-    private ?string $tag7 = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Groups([
-        'read:Article',
-        'write:Article',
-    ])]
-    private ?string $tag8 = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Groups([
-        'read:Article',
-        'write:Article',
-    ])]
-    private ?string $tag9 = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Groups([
-        'read:Article',
-        'write:Article',
-    ])]
-    private ?string $tag10 = null;
-
     #[ORM\Column(nullable: true)]
     private ?int $nbLiaison = null;
 
@@ -225,6 +161,28 @@ class Article implements UserOwnedInterface
         'read:Article',
     ])]
     public array $fichiers = [];
+
+    #[ORM\OneToMany(mappedBy: 'article', targetEntity: ArticleGalerie::class)]
+    private Collection $articleGaleries;
+
+    #[ORM\OneToMany(mappedBy: 'article', targetEntity: ArticleTag::class)]
+    private Collection $articleTags;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups([
+        'read:Article',
+        'write:Article',
+    ])]
+    private ?string $slug = null;
+
+    public function __construct()
+    {
+        $this->articleGaleries = new ArrayCollection();
+        $this->articleTags = new ArrayCollection();
+        $this->dateAjout = new \DateTimeImmutable();
+        $this->dateModif = new \DateTime();
+        $this->deleted = "0";
+    }
 
     public function getId(): ?int
     {
@@ -346,126 +304,6 @@ class Article implements UserOwnedInterface
         return $this;
     }
 
-    public function getTag1(): ?string
-    {
-        return $this->tag1;
-    }
-
-    public function setTag1(string $tag1): static
-    {
-        $this->tag1 = $tag1;
-
-        return $this;
-    }
-
-    public function getTag2(): ?string
-    {
-        return $this->tag2;
-    }
-
-    public function setTag2(string $tag2): static
-    {
-        $this->tag2 = $tag2;
-
-        return $this;
-    }
-
-    public function getTag3(): ?string
-    {
-        return $this->tag3;
-    }
-
-    public function setTag3(?string $tag3): static
-    {
-        $this->tag3 = $tag3;
-
-        return $this;
-    }
-
-    public function getTag4(): ?string
-    {
-        return $this->tag4;
-    }
-
-    public function setTag4(?string $tag4): static
-    {
-        $this->tag4 = $tag4;
-
-        return $this;
-    }
-
-    public function getTag5(): ?string
-    {
-        return $this->tag5;
-    }
-
-    public function setTag5(?string $tag5): static
-    {
-        $this->tag5 = $tag5;
-
-        return $this;
-    }
-
-    public function getTag6(): ?string
-    {
-        return $this->tag6;
-    }
-
-    public function setTag6(?string $tag6): static
-    {
-        $this->tag6 = $tag6;
-
-        return $this;
-    }
-
-    public function getTag7(): ?string
-    {
-        return $this->tag7;
-    }
-
-    public function setTag7(?string $tag7): static
-    {
-        $this->tag7 = $tag7;
-
-        return $this;
-    }
-
-    public function getTag8(): ?string
-    {
-        return $this->tag8;
-    }
-
-    public function setTag8(?string $tag8): static
-    {
-        $this->tag8 = $tag8;
-
-        return $this;
-    }
-
-    public function getTag9(): ?string
-    {
-        return $this->tag9;
-    }
-
-    public function setTag9(?string $tag9): static
-    {
-        $this->tag9 = $tag9;
-
-        return $this;
-    }
-
-    public function getTag10(): ?string
-    {
-        return $this->tag10;
-    }
-
-    public function setTag10(?string $tag10): static
-    {
-        $this->tag10 = $tag10;
-
-        return $this;
-    }
-
     public function getNbLiaison(): ?int
     {
         return $this->nbLiaison;
@@ -486,6 +324,78 @@ class Article implements UserOwnedInterface
     public function setFichiers(array $fichiers)
     {
         $this->fichiers = $fichiers;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ArticleGalerie>
+     */
+    public function getArticleGaleries(): Collection
+    {
+        return $this->articleGaleries;
+    }
+
+    public function addArticleGalery(ArticleGalerie $articleGalery): static
+    {
+        if (!$this->articleGaleries->contains($articleGalery)) {
+            $this->articleGaleries->add($articleGalery);
+            $articleGalery->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticleGalery(ArticleGalerie $articleGalery): static
+    {
+        if ($this->articleGaleries->removeElement($articleGalery)) {
+            // set the owning side to null (unless already changed)
+            if ($articleGalery->getArticle() === $this) {
+                $articleGalery->setArticle(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ArticleTag>
+     */
+    public function getArticleTags(): Collection
+    {
+        return $this->articleTags;
+    }
+
+    public function addArticleTag(ArticleTag $articleTag): static
+    {
+        if (!$this->articleTags->contains($articleTag)) {
+            $this->articleTags->add($articleTag);
+            $articleTag->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticleTag(ArticleTag $articleTag): static
+    {
+        if ($this->articleTags->removeElement($articleTag)) {
+            // set the owning side to null (unless already changed)
+            if ($articleTag->getArticle() === $this) {
+                $articleTag->setArticle(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): static
+    {
+        $this->slug = $slug;
+
         return $this;
     }
 
