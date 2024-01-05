@@ -48,7 +48,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     ]
 )]
 #[ApiFilter(OrderFilter::class, properties: ['id'])]
-#[ApiFilter(SearchFilter::class, properties: ['deleted' => 'exact'])]
+#[ApiFilter(SearchFilter::class, properties: [
+    'deleted' => 'exact',
+    'document' => 'exact',
+    'categorieDocument' => 'exact',
+])]
 class DocumentCategorieDocument
 {
     use EntityTimestampTrait;

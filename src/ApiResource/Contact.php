@@ -7,11 +7,11 @@ use ApiPlatform\Metadata\Post;
 use App\State\ContactProcessor;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ApiResource(
-    operations: [
-        new Post(processor: ContactProcessor::class)
-    ]
-)]
+//#[ApiResource(
+//    operations: [
+//        new Post(processor: ContactProcessor::class)
+//    ]
+//)]
 class Contact
 {
     #[Assert\NotBlank]

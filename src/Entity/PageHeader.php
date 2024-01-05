@@ -48,7 +48,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     ]
 )]
 #[ApiFilter(OrderFilter::class, properties: ['id'])]
-#[ApiFilter(SearchFilter::class, properties: ['deleted' => 'exact'])]
+#[ApiFilter(SearchFilter::class, properties: [
+    'deleted' => 'exact',
+    'page' => 'exact',
+    'header' => 'exact',
+])]
 class PageHeader
 {
     use EntityTimestampTrait;
