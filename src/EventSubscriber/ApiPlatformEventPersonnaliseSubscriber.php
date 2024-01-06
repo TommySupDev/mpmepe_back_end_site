@@ -76,12 +76,12 @@ final class ApiPlatformEventPersonnaliseSubscriber implements EventSubscriberInt
             return;
         }
 
-        $nomTable = explode('\\', $entity::class);
-        $nomTable = $nomTable[(count($nomTable) - 1)];
-
-        $idTable = $entity->getId();
-
         if ($method === Request::METHOD_POST) {
+            $nomTable = explode('\\', $entity::class);
+            $nomTable = $nomTable[(count($nomTable) - 1)];
+
+            $idTable = $entity->getId();
+
             if (!$request->request->get('resourceId')) {
                 // Cas d'un ajout
                 $historique = (new Historique())
@@ -150,6 +150,11 @@ final class ApiPlatformEventPersonnaliseSubscriber implements EventSubscriberInt
         }
 
         if (($method === Request::METHOD_PUT) || ($method === Request::METHOD_PATCH)) {
+            $nomTable = explode('\\', $entity::class);
+            $nomTable = $nomTable[(count($nomTable) - 1)];
+
+            $idTable = $entity->getId();
+
             $historique = (new Historique())
                 ->setOperation("Modification d'un enregistrement")
                 ->setNomTable($nomTable)
@@ -167,7 +172,7 @@ final class ApiPlatformEventPersonnaliseSubscriber implements EventSubscriberInt
             $nomTable = explode('\\', $entity::class);
             $nomTable = $nomTable[(count($nomTable) - 1)];
 
-            $idTable = $entity->getId();
+            $idTable = $request->attributes->get('dataEntityRemoveId');
 
             $historique = (new Historique())
                 ->setOperation("Suppression d'un enregistrement")

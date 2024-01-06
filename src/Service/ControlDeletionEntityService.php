@@ -6,11 +6,13 @@ namespace App\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use ReflectionException;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class ControlDeletionEntityService
 {
     public function __construct(
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
+        private RequestStack $requestStack
     )
     {
     }
@@ -20,6 +22,10 @@ class ControlDeletionEntityService
      */
     public function controlDeletion(object $entity): void
     {
+        $request = $this->requestStack->getCurrentRequest();
+        $request?->attributes->set('data', $entity);
+        $request?->attributes->set('dataEntityRemoveId', $entity->getId());
+
         $reflectionClass = new \ReflectionClass($entity::class);
         $supprimable = $reflectionClass->hasProperty('nbLiaison');
 
