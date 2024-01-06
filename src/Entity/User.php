@@ -63,7 +63,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 )]
 #[UniqueEntity('email')]
 #[ApiFilter(DateFilter::class, properties: ['dateAjout', 'dateModif'])]
-#[ApiFilter(OrderFilter::class, properties: ['id', 'username'])]
+#[ApiFilter(OrderFilter::class, properties: ['id', 'email'])]
 #[ApiFilter(SearchFilter::class, properties: ['deleted' => 'exact', 'userAjout' => 'exact', 'userModif' => 'exact'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, UserOwnedInterface
 {
@@ -110,15 +110,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, UserOwn
     #[Assert\NotBlank]
     #[Groups(['write:User'])]
     private ?string $plainPassword = null;
-
-    #[ORM\Column(length: 255)]
-    #[Groups([
-        'read:User',
-        'write:User',
-        'read:UserRole',
-        'read:Historique',
-    ])]
-    private ?string $username = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserRole::class)]
     private Collection $userRoles;
@@ -234,18 +225,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, UserOwn
     public function eraseCredentials(): void
     {
         $this->plainPassword = "null";
-    }
-
-    public function getUsername(): ?string
-    {
-        return $this->username;
-    }
-
-    public function setUsername(string $username): static
-    {
-        $this->username = $username;
-
-        return $this;
     }
 
     /**
