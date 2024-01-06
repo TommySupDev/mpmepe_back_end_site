@@ -247,7 +247,7 @@ CREATE TABLE `copyright` (
   KEY `IDX_388115F333B55E82` (`user_modif_id`),
   CONSTRAINT `FK_388115F333B55E82` FOREIGN KEY (`user_modif_id`) REFERENCES `user` (`id`),
   CONSTRAINT `FK_388115F33E5713E` FOREIGN KEY (`user_ajout_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -570,7 +570,7 @@ CREATE TABLE `historique` (
   PRIMARY KEY (`id`),
   KEY `IDX_EDBFD5ECA76ED395` (`user_id`),
   CONSTRAINT `FK_EDBFD5ECA76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -773,7 +773,7 @@ CREATE TABLE `refresh_tokens` (
   `valid` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_9BACE7E1C74F2195` (`refresh_token`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -782,6 +782,7 @@ CREATE TABLE `refresh_tokens` (
 
 LOCK TABLES `refresh_tokens` WRITE;
 /*!40000 ALTER TABLE `refresh_tokens` DISABLE KEYS */;
+INSERT INTO `refresh_tokens` VALUES (1,'83740757246b8859db0cf4ee0cf2281f778b15d225a8272d36a5d053bd90488ea6e2764ad92333ba3863e1b618b260b1b48540921493ac4055d996b0c234e6c8','admin1@gmail.com','2024-01-12 23:47:58'),(2,'32f7d7dee22539321e8d200be6e4ac3576fbb6eefd79d5cb1d51e7cb485870bdcdcef89b18ea2cb912754edbabaf7eef3c8cb40554f75111ddc7dd0f9102b2a6','admin1@gmail.com','2024-01-13 00:00:41'),(3,'abf404048e7e1a08f127b24c2a3ed7b3716c8fb3b1f5da276ecbdf5f14cd58309411c12605a6c5ff087486dc967bdc08ddd3e169f19d80fe50cb7b9156416a5a','admin1@gmail.com','2024-01-13 00:22:08');
 /*!40000 ALTER TABLE `refresh_tokens` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -940,7 +941,6 @@ CREATE TABLE `user` (
   `email` varchar(180) COLLATE utf8mb4_unicode_ci NOT NULL,
   `roles` json NOT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `username` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `nb_liaison` int(11) DEFAULT NULL,
   `date_ajout` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
   `date_modif` datetime DEFAULT NULL,
@@ -953,7 +953,7 @@ CREATE TABLE `user` (
   KEY `IDX_8D93D64933B55E82` (`user_modif_id`),
   CONSTRAINT `FK_8D93D64933B55E82` FOREIGN KEY (`user_modif_id`) REFERENCES `user` (`id`),
   CONSTRAINT `FK_8D93D6493E5713E` FOREIGN KEY (`user_ajout_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -962,6 +962,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES (1,'admin1@gmail.com','[\"ROLE_ADMIN\"]','$2y$13$8ni8mIDPltlmdbrOHcsbv.6./odrAmlU7KD42HqG/cfhnkQulYSLi',6,'2024-01-05 23:45:57','2024-01-06 00:00:00','0',NULL,NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1047,4 +1048,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-01-04 11:03:01
+-- Dump completed on 2024-01-06  3:16:16
