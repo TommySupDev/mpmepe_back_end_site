@@ -138,7 +138,7 @@ class Article implements UserOwnedInterface
         'read:Article',
         'write:Article',
     ])]
-    private ?int $category = null;
+    private string|int|null $category = null;
 
     #[ORM\Column(nullable: true)]
     private ?int $nbLiaison = null;
@@ -297,9 +297,9 @@ class Article implements UserOwnedInterface
         return $this->category;
     }
 
-    public function setCategory(int $category): static
+    public function setCategory(string|int|null $category): static
     {
-        $this->category = $category;
+        $this->category = (int) $category;
 
         return $this;
     }

@@ -50,6 +50,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 )]
 #[ApiFilter(OrderFilter::class, properties: ['id'])]
 #[ApiFilter(SearchFilter::class, properties: ['deleted' => 'exact'])]
+#[UniqueEntity(
+    fields: ['contact', 'valeurDemande']
+)]
 class ContactValeurDemande
 {
     use EntityTimestampTrait;

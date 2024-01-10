@@ -53,6 +53,9 @@ use Doctrine\ORM\Mapping as ORM;
 )]
 #[ApiFilter(OrderFilter::class, properties: ['id', 'libelle'])]
 #[ApiFilter(SearchFilter::class, properties: ['deleted' => 'exact', 'userAjout' => 'exact', 'userModif' => 'exact'])]
+#[UniqueEntity(
+    fields: 'libelle'
+)]
 class Direction implements UserOwnedInterface
 {
     use EntityTimestampTrait;

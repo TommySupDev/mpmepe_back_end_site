@@ -53,6 +53,9 @@ use Doctrine\ORM\Mapping as ORM;
 )]
 #[ApiFilter(OrderFilter::class, properties: ['id', 'optionValue'])]
 #[ApiFilter(SearchFilter::class, properties: ['deleted' => 'exact', 'userAjout' => 'exact', 'userModif' => 'exact'])]
+#[UniqueEntity(
+    fields: ['optionValue', 'demande']
+)]
 class ValeurDemande implements UserOwnedInterface
 {
     use EntityTimestampTrait;

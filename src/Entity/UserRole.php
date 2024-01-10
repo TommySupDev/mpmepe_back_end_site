@@ -61,6 +61,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     'user' => 'exact',
     'role' => 'exact',
 ])]
+#[UniqueEntity(
+    fields: ['user', 'role']
+)]
 class UserRole implements UserOwnedInterface
 {
     use EntityTimestampTrait;

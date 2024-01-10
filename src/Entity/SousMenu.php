@@ -51,6 +51,9 @@ use Doctrine\ORM\Mapping as ORM;
 )]
 #[ApiFilter(OrderFilter::class, properties: ['id', 'name'])]
 #[ApiFilter(SearchFilter::class, properties: ['deleted' => 'exact', 'userAjout' => 'exact', 'userModif' => 'exact'])]
+#[UniqueEntity(
+    fields: ['name', 'menu']
+)]
 class SousMenu implements UserOwnedInterface
 {
     use EntityTimestampTrait;
@@ -104,7 +107,7 @@ class SousMenu implements UserOwnedInterface
         'read:Header',
         'read:Menu',
     ])]
-    private ?int $position = null;
+    private string|int|null $position = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Groups([
@@ -158,9 +161,9 @@ class SousMenu implements UserOwnedInterface
         return $this->position;
     }
 
-    public function setPosition(int $position): static
+    public function setPosition(string|int $position): static
     {
-        $this->position = $position;
+        $this->position = (int) $position;
 
         return $this;
     }

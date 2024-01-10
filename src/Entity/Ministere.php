@@ -57,6 +57,9 @@ use Doctrine\ORM\Mapping as ORM;
 )]
 #[ApiFilter(OrderFilter::class, properties: ['id'])]
 #[ApiFilter(SearchFilter::class, properties: ['deleted' => 'exact', 'userAjout' => 'exact', 'userModif' => 'exact'])]
+#[UniqueEntity(
+    fields: 'nomSite'
+)]
 class Ministere implements UserOwnedInterface
 {
     use EntityTimestampTrait;
@@ -105,7 +108,7 @@ class Ministere implements UserOwnedInterface
         'read:Direction',
         'read:Dirigeant',
     ])]
-    private ?float $longitude = null;
+    private string|float|null $longitude = null;
 
     #[ORM\Column(nullable: true)]
     #[Groups([
@@ -114,7 +117,7 @@ class Ministere implements UserOwnedInterface
         'read:Direction',
         'read:Dirigeant',
     ])]
-    private ?float $latitude = null;
+    private string|float|null $latitude = null;
 
     #[ORM\Column(length: 255)]
     #[Groups([
@@ -225,9 +228,9 @@ class Ministere implements UserOwnedInterface
         return $this->longitude;
     }
 
-    public function setLongitude(?float $longitude): static
+    public function setLongitude(string|float|null $longitude): static
     {
-        $this->longitude = $longitude;
+        $this->longitude = (float) $longitude;
 
         return $this;
     }
@@ -237,9 +240,9 @@ class Ministere implements UserOwnedInterface
         return $this->latitude;
     }
 
-    public function setLatitude(?float $latitude): static
+    public function setLatitude(string|float|null $latitude): static
     {
-        $this->latitude = $latitude;
+        $this->latitude = (float) $latitude;
 
         return $this;
     }

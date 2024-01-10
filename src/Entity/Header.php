@@ -56,6 +56,9 @@ use Doctrine\ORM\Mapping as ORM;
 )]
 #[ApiFilter(OrderFilter::class, properties: ['id', 'name'])]
 #[ApiFilter(SearchFilter::class, properties: ['deleted' => 'exact', 'userAjout' => 'exact', 'userModif' => 'exact'])]
+#[UniqueEntity(
+    fields: 'name'
+)]
 class Header implements UserOwnedInterface
 {
     use EntityTimestampTrait;
@@ -76,7 +79,7 @@ class Header implements UserOwnedInterface
         'write:Header',
         'read:PageHeader',
     ])]
-    private ?int $position = null;
+    private string|int|null $position = null;
 
     #[ORM\Column(length: 255)]
     #[Groups([
@@ -162,9 +165,9 @@ class Header implements UserOwnedInterface
         return $this->position;
     }
 
-    public function setPosition(int $position): static
+    public function setPosition(string|int|null $position): static
     {
-        $this->position = $position;
+        $this->position = (int) $position;
 
         return $this;
     }

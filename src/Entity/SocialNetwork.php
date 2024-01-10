@@ -56,6 +56,9 @@ use Doctrine\ORM\Mapping as ORM;
 )]
 #[ApiFilter(OrderFilter::class, properties: ['id', 'nom', 'affichage'])]
 #[ApiFilter(SearchFilter::class, properties: ['deleted' => 'exact', 'userAjout' => 'exact', 'userModif' => 'exact'])]
+#[UniqueEntity(
+    fields: 'nom'
+)]
 class SocialNetwork implements UserOwnedInterface
 {
     use EntityTimestampTrait;
@@ -94,7 +97,7 @@ class SocialNetwork implements UserOwnedInterface
         'read:SocialNetwork',
         'write:SocialNetwork',
     ])]
-    private ?int $affichage = null;
+    private string|int|null $affichage = null;
 
     #[ORM\Column(nullable: true)]
     #[Groups([
@@ -189,9 +192,9 @@ class SocialNetwork implements UserOwnedInterface
         return $this->affichage;
     }
 
-    public function setAffichage(int $affichage): static
+    public function setAffichage(string|int $affichage): static
     {
-        $this->affichage = $affichage;
+        $this->affichage = (int) $affichage;
 
         return $this;
     }

@@ -99,14 +99,14 @@ class Galerie implements UserOwnedInterface
         'read:Galerie',
         'read:ArticleGalerie',
     ])]
-    private ?float $nbTelechargement = null;
+    private string|float|null $nbTelechargement = null;
 
     #[ORM\Column(nullable: true)]
     #[Groups([
         'read:Galerie',
         'read:ArticleGalerie',
     ])]
-    private ?float $tailleFichier = null;
+    private string|float|null $tailleFichier = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups([
@@ -199,9 +199,9 @@ class Galerie implements UserOwnedInterface
         return $this->nbTelechargement;
     }
 
-    public function setNbTelechargement(?float $nbTelechargement): static
+    public function setNbTelechargement(string|float|null $nbTelechargement): static
     {
-        $this->nbTelechargement = $nbTelechargement;
+        $this->nbTelechargement = (float) $nbTelechargement;
 
         return $this;
     }
@@ -211,9 +211,9 @@ class Galerie implements UserOwnedInterface
         return $this->tailleFichier;
     }
 
-    public function setTailleFichier(?float $tailleFichier): static
+    public function setTailleFichier(string|float|null $tailleFichier): static
     {
-        $this->tailleFichier = $tailleFichier;
+        $this->tailleFichier = (float) $tailleFichier;
 
         return $this;
     }

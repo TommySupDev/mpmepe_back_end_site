@@ -54,6 +54,9 @@ use Doctrine\ORM\Mapping as ORM;
 )]
 #[ApiFilter(OrderFilter::class, properties: ['id', 'nomPrenoms', 'debutFonction'])]
 #[ApiFilter(SearchFilter::class, properties: ['deleted' => 'exact', 'userAjout' => 'exact', 'userModif' => 'exact'])]
+#[UniqueEntity(
+    fields: ['nomPrenoms', 'ministere', 'direction']
+)]
 class Dirigeant implements UserOwnedInterface
 {
     use EntityTimestampTrait;

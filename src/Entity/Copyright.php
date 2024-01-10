@@ -51,6 +51,9 @@ use Doctrine\ORM\Mapping as ORM;
 )]
 #[ApiFilter(OrderFilter::class, properties: ['texte', 'mentionLegale'])]
 #[ApiFilter(SearchFilter::class, properties: ['deleted' => 'exact', 'userAjout' => 'exact', 'userModif' => 'exact'])]
+#[UniqueEntity(
+    fields: ['texte', 'mentionLegale']
+)]
 class Copyright implements UserOwnedInterface
 {
     use EntityTimestampTrait;

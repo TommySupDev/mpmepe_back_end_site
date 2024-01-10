@@ -53,6 +53,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     'page' => 'exact',
     'header' => 'exact',
 ])]
+#[UniqueEntity(
+    fields: ['page', 'header']
+)]
 class PageHeader
 {
     use EntityTimestampTrait;

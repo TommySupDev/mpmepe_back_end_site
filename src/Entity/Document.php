@@ -115,7 +115,7 @@ class Document implements UserOwnedInterface
         'write:Document',
         'read:DocumentCategorieDocument',
     ])]
-    private ?float $nbLecture = null;
+    private string|float|null $nbLecture = null;
 
     #[ORM\Column(nullable: true)]
     #[Groups([
@@ -123,14 +123,14 @@ class Document implements UserOwnedInterface
         'write:Document',
         'read:DocumentCategorieDocument',
     ])]
-    private ?float $nbTelechargement = null;
+    private string|float|null $nbTelechargement = null;
 
     #[ORM\Column(nullable: true)]
     #[Groups([
         'read:Document',
         'read:DocumentCategorieDocument',
     ])]
-    private ?float $tailleFichier = null;
+    private string|float|null $tailleFichier = null;
 
     #[Groups([
         'read:Document',
@@ -274,9 +274,9 @@ class Document implements UserOwnedInterface
         return $this->nbLecture;
     }
 
-    public function setNbLecture(?float $nbLecture): static
+    public function setNbLecture(string|float|null $nbLecture): static
     {
-        $this->nbLecture = $nbLecture;
+        $this->nbLecture = (float) $nbLecture;
 
         return $this;
     }
@@ -286,9 +286,9 @@ class Document implements UserOwnedInterface
         return $this->nbTelechargement;
     }
 
-    public function setNbTelechargement(?float $nbTelechargement): static
+    public function setNbTelechargement(string|float|null $nbTelechargement): static
     {
-        $this->nbTelechargement = $nbTelechargement;
+        $this->nbTelechargement = (float) $nbTelechargement;
 
         return $this;
     }
@@ -298,9 +298,9 @@ class Document implements UserOwnedInterface
         return $this->tailleFichier;
     }
 
-    public function setTailleFichier(?float $tailleFichier): static
+    public function setTailleFichier(string|float|null $tailleFichier): static
     {
-        $this->tailleFichier = $tailleFichier;
+        $this->tailleFichier = (float) $tailleFichier;
 
         return $this;
     }

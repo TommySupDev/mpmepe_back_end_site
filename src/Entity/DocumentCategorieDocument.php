@@ -53,6 +53,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     'document' => 'exact',
     'categorieDocument' => 'exact',
 ])]
+#[UniqueEntity(
+    fields: ['document', 'categorieDocument']
+)]
 class DocumentCategorieDocument
 {
     use EntityTimestampTrait;
