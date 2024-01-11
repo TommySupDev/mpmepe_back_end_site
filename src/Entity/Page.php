@@ -73,7 +73,7 @@ class Page implements UserOwnedInterface
     ])]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     #[Groups([
         'read:Page',
         'read:PageHeader',
