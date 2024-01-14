@@ -65,7 +65,8 @@ class Demande implements UserOwnedInterface
     #[ORM\Column]
     #[Groups([
         'read:Demande',
-        'read:ContactValeurDemande'
+        'read:ContactValeurDemande',
+        'read:ValeurDemande',
     ])]
     private ?int $id = null;
 
@@ -73,7 +74,8 @@ class Demande implements UserOwnedInterface
     #[Groups([
         'read:Demande',
         'write:Demande',
-        'read:ContactValeurDemande'
+        'read:ContactValeurDemande',
+        'read:ValeurDemande',
     ])]
     private ?string $name = null;
 
@@ -95,9 +97,9 @@ class Demande implements UserOwnedInterface
     private ?User $userModif = null;
 
     #[ORM\OneToMany(mappedBy: 'demande', targetEntity: ValeurDemande::class)]
-    #[Groups([
-        'read:Demande',
-    ])]
+//    #[Groups([
+//        'read:Demande',
+//    ])]
     private Collection $valeurDemandes;
 
     public function __construct()

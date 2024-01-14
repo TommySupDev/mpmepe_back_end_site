@@ -71,6 +71,7 @@ class Menu implements UserOwnedInterface
     #[Groups([
         'read:Menu',
         'read:Header',
+        'read:SousMenu',
     ])]
     private ?int $id = null;
 
@@ -79,6 +80,7 @@ class Menu implements UserOwnedInterface
         'read:Menu',
         'write:Menu',
         'read:Header',
+        'read:SousMenu',
     ])]
     private ?string $name = null;
 
@@ -105,6 +107,7 @@ class Menu implements UserOwnedInterface
         'read:Menu',
         'write:Menu',
         'read:Header',
+        'read:SousMenu',
     ])]
     private ?string $description = null;
 
@@ -112,12 +115,14 @@ class Menu implements UserOwnedInterface
     #[Groups([
         'read:Menu',
         'read:Header',
+        'read:SousMenu',
     ])]
     private ?string $imageCodeFichier = null;
 
     #[Groups([
         'read:Menu',
         'read:Header',
+        'read:SousMenu',
     ])]
     public array $fichiers = [];
 
@@ -143,6 +148,7 @@ class Menu implements UserOwnedInterface
         'read:Menu',
         'write:Menu',
         'read:Header',
+        'read:SousMenu',
     ])]
     private ?string $lien = null;
 
@@ -151,6 +157,7 @@ class Menu implements UserOwnedInterface
         'read:Menu',
         'write:Menu',
         'read:Header',
+        'read:SousMenu',
     ])]
     private string|int|null $position = null;
 
@@ -159,6 +166,7 @@ class Menu implements UserOwnedInterface
         'read:Menu',
         'write:Menu',
         'read:Header',
+        'read:SousMenu',
     ])]
     private ?string $slug = null;
 
@@ -167,6 +175,7 @@ class Menu implements UserOwnedInterface
         'read:Menu',
         'write:Menu',
         'read:Header',
+        'read:SousMenu',
     ])]
     private ?string $formatPage = null;
 

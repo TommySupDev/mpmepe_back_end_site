@@ -75,6 +75,8 @@ class Article implements UserOwnedInterface
     #[ORM\Column]
     #[Groups([
         'read:Article',
+        'read:ArticleGalerie',
+        'read:ArticleTag',
     ])]
     private ?int $id = null;
 
@@ -82,6 +84,8 @@ class Article implements UserOwnedInterface
     #[Groups([
         'read:Article',
         'write:Article',
+        'read:ArticleGalerie',
+        'read:ArticleTag',
     ])]
     private ?string $titre = null;
 
@@ -95,6 +99,8 @@ class Article implements UserOwnedInterface
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups([
         'read:Article',
+        'read:ArticleGalerie',
+        'read:ArticleTag',
     ])]
     private ?string $imageCodeFichier = null;
 
@@ -102,6 +108,8 @@ class Article implements UserOwnedInterface
     #[Groups([
         'read:Article',
         'write:Article',
+        'read:ArticleGalerie',
+        'read:ArticleTag',
     ])]
     private ?\DateTimeInterface $dateEvent = null;
 
@@ -116,6 +124,8 @@ class Article implements UserOwnedInterface
     #[Groups([
         'read:Article',
         'write:Article',
+        'read:ArticleGalerie',
+        'read:ArticleTag',
     ])]
     private ?\DateTimeInterface $publicationDate = null;
 

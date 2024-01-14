@@ -70,6 +70,7 @@ class Header implements UserOwnedInterface
     #[Groups([
         'read:Header',
         'read:PageHeader',
+        'read:Menu',
     ])]
     private ?int $id = null;
 
@@ -78,6 +79,7 @@ class Header implements UserOwnedInterface
         'read:Header',
         'write:Header',
         'read:PageHeader',
+        'read:Menu',
     ])]
     private string|int|null $position = null;
 
@@ -86,6 +88,7 @@ class Header implements UserOwnedInterface
         'read:Header',
         'write:Header',
         'read:PageHeader',
+        'read:Menu',
     ])]
     private ?string $name = null;
 
@@ -94,6 +97,7 @@ class Header implements UserOwnedInterface
         'read:Header',
         'write:Header',
         'read:PageHeader',
+        'read:Menu',
     ])]
     private ?string $affichage = null;
 
@@ -102,6 +106,7 @@ class Header implements UserOwnedInterface
         'read:Header',
         'write:Header',
         'read:PageHeader',
+        'read:Menu',
     ])]
     private ?string $slug = null;
 
@@ -136,6 +141,7 @@ class Header implements UserOwnedInterface
         'read:Header',
         'write:Header',
         'read:PageHeader',
+        'read:Menu',
     ])]
     private ?string $formatPage = null;
 
