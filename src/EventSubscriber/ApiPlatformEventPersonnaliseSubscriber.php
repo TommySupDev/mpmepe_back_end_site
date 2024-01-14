@@ -169,20 +169,22 @@ final class ApiPlatformEventPersonnaliseSubscriber implements EventSubscriberInt
         if ($method === Request::METHOD_DELETE) {
             $entity = $request->attributes->get('data');
 
-            $nomTable = explode('\\', $entity::class);
-            $nomTable = $nomTable[(count($nomTable) - 1)];
+            if ($entity) {
+                $nomTable = explode('\\', $entity::class);
+                $nomTable = $nomTable[(count($nomTable) - 1)];
 
-            $idTable = $request->attributes->get('dataEntityRemoveId');
+                $idTable = $request->attributes->get('dataEntityRemoveId');
 
-            $historique = (new Historique())
-                ->setOperation("Suppression d'un enregistrement")
-                ->setNomTable($nomTable)
-                ->setIdTable($idTable)
-                ->setUser($this->security->getUser())
-            ;
+                $historique = (new Historique())
+                    ->setOperation("Suppression d'un enregistrement")
+                    ->setNomTable($nomTable)
+                    ->setIdTable($idTable)
+                    ->setUser($this->security->getUser())
+                ;
 
-            $this->entityManager->persist($historique);
-            $this->entityManager->flush();
+                $this->entityManager->persist($historique);
+                $this->entityManager->flush();
+            }
         }
     }
 

@@ -23,8 +23,11 @@ class ControlDeletionEntityService
     public function controlDeletion(object $entity): void
     {
         $request = $this->requestStack->getCurrentRequest();
-        $request?->attributes->set('data', $entity);
-        $request?->attributes->set('dataEntityRemoveId', $entity->getId());
+
+        if ($request && $request?->attributes->get('data')) {
+            $request?->attributes->set('data', $entity);
+            $request?->attributes->set('dataEntityRemoveId', $entity->getId());
+        }
 
         $reflectionClass = new \ReflectionClass($entity::class);
         $supprimable = $reflectionClass->hasProperty('nbLiaison');
