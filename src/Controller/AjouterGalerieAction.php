@@ -31,18 +31,18 @@ final class AjouterGalerieAction extends AbstractController
         $data->message = "Impossible de désérialiser les données.";
 
         if (array_key_exists('fichier', $request->files->all())) {
-            // On s'assure que la reference est unique pour ne pas lier d'autres fichiers
-            do {
-                $reference = $this->randomStringGeneratorServices->random_alphanumeric(16);
-
-                $existFiles = $this->filesRepository->findBy([
-                    'referenceCode' => $reference
-                ]);
-
-            } while (count($existFiles) > 0);
-
             foreach ($request->files->all()['fichier'] as $fichier) {
                 if ($fichier instanceof UploadedFile) {
+                    // On s'assure que la reference est unique pour ne pas lier d'autres fichiers
+                    do {
+                        $reference = $this->randomStringGeneratorServices->random_alphanumeric(16);
+
+                        $existFiles = $this->filesRepository->findBy([
+                            'referenceCode' => $reference
+                        ]);
+
+                    } while (count($existFiles) > 0);
+
                     $fileObj = $this->fileUploader->saveFile(
                         $fichier,
                         false,
