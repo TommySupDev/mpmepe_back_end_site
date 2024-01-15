@@ -157,14 +157,14 @@ class Files
         return $this;
     }
 
-    public function getSize(): ?int
+    public function getSize(): ?float
     {
         return $this->size;
     }
 
-    public function setSize(int $size): self
+    public function setSize(float|int $size): self
     {
-        $this->size = $size;
+        $this->size = (float) $size;
 
         return $this;
     }
