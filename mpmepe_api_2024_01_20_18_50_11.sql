@@ -32,7 +32,7 @@ CREATE TABLE `article` (
   `publication_date` datetime NOT NULL,
   `is_mention` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `is_flashinfo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `category` int(11) NOT NULL,
+  `category` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `nb_liaison` int(11) DEFAULT NULL,
   `date_ajout` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
   `date_modif` datetime DEFAULT NULL,
@@ -247,7 +247,7 @@ CREATE TABLE `copyright` (
   KEY `IDX_388115F333B55E82` (`user_modif_id`),
   CONSTRAINT `FK_388115F333B55E82` FOREIGN KEY (`user_modif_id`) REFERENCES `user` (`id`),
   CONSTRAINT `FK_388115F33E5713E` FOREIGN KEY (`user_ajout_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -311,6 +311,7 @@ CREATE TABLE `direction` (
   `deleted` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `user_ajout_id` int(11) DEFAULT NULL,
   `user_modif_id` int(11) DEFAULT NULL,
+  `description` longtext COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`id`),
   KEY `IDX_3E4AD1B33E5713E` (`user_ajout_id`),
   KEY `IDX_3E4AD1B333B55E82` (`user_modif_id`),
@@ -354,6 +355,7 @@ CREATE TABLE `dirigeant` (
   `deleted` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `user_ajout_id` int(11) DEFAULT NULL,
   `user_modif_id` int(11) DEFAULT NULL,
+  `image_code_fichier` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_BEC71E71AD745416` (`ministere_id`),
   KEY `IDX_BEC71E71AF73D997` (`direction_id`),
@@ -392,9 +394,9 @@ CREATE TABLE `document` (
   `date_ajout` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
   `date_modif` datetime DEFAULT NULL,
   `deleted` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `nb_lecture` double DEFAULT NULL,
-  `nb_telechargement` double DEFAULT NULL,
-  `taille_fichier` double DEFAULT NULL,
+  `nb_lecture` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nb_telechargement` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `taille_fichier` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `extension_fichier` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `user_ajout_id` int(11) DEFAULT NULL,
   `user_modif_id` int(11) DEFAULT NULL,
@@ -491,8 +493,8 @@ CREATE TABLE `galerie` (
   `code_fichier` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `titre` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `nb_liaison` int(11) DEFAULT NULL,
-  `nb_telechargement` double DEFAULT NULL,
-  `taille_fichier` double DEFAULT NULL,
+  `nb_telechargement` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `taille_fichier` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `extension_fichier` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `date_ajout` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
   `date_modif` datetime DEFAULT NULL,
@@ -523,7 +525,7 @@ DROP TABLE IF EXISTS `header`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `header` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `position` int(11) NOT NULL,
+  `position` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `affichage` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `slug` longtext COLLATE utf8mb4_unicode_ci,
@@ -570,7 +572,7 @@ CREATE TABLE `historique` (
   PRIMARY KEY (`id`),
   KEY `IDX_EDBFD5ECA76ED395` (`user_id`),
   CONSTRAINT `FK_EDBFD5ECA76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -602,7 +604,7 @@ CREATE TABLE `menu` (
   `user_ajout_id` int(11) DEFAULT NULL,
   `user_modif_id` int(11) DEFAULT NULL,
   `lien` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `position` int(11) NOT NULL,
+  `position` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `slug` longtext COLLATE utf8mb4_unicode_ci,
   `format_page` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -667,8 +669,8 @@ CREATE TABLE `ministere` (
   `logo_code_fichier` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `nom_site` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `adresse` longtext COLLATE utf8mb4_unicode_ci,
-  `longitude` double DEFAULT NULL,
-  `latitude` double DEFAULT NULL,
+  `longitude` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `latitude` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `phone` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `nb_liaison` int(11) DEFAULT NULL,
@@ -703,7 +705,7 @@ DROP TABLE IF EXISTS `page`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `page` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `image_code_fichier` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `image_code_fichier` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `titre` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `nb_liaison` int(11) DEFAULT NULL,
   `date_ajout` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
@@ -711,11 +713,18 @@ CREATE TABLE `page` (
   `deleted` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `user_ajout_id` int(11) DEFAULT NULL,
   `user_modif_id` int(11) DEFAULT NULL,
+  `menu_id` int(11) DEFAULT NULL,
+  `sous_menu_id` int(11) DEFAULT NULL,
+  `contenu` longtext COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_140AB620CCD7E912` (`menu_id`),
+  UNIQUE KEY `UNIQ_140AB620EFDE915F` (`sous_menu_id`),
   KEY `IDX_140AB6203E5713E` (`user_ajout_id`),
   KEY `IDX_140AB62033B55E82` (`user_modif_id`),
   CONSTRAINT `FK_140AB62033B55E82` FOREIGN KEY (`user_modif_id`) REFERENCES `user` (`id`),
-  CONSTRAINT `FK_140AB6203E5713E` FOREIGN KEY (`user_ajout_id`) REFERENCES `user` (`id`)
+  CONSTRAINT `FK_140AB6203E5713E` FOREIGN KEY (`user_ajout_id`) REFERENCES `user` (`id`),
+  CONSTRAINT `FK_140AB620CCD7E912` FOREIGN KEY (`menu_id`) REFERENCES `menu` (`id`),
+  CONSTRAINT `FK_140AB620EFDE915F` FOREIGN KEY (`sous_menu_id`) REFERENCES `sous_menu` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -773,7 +782,7 @@ CREATE TABLE `refresh_tokens` (
   `valid` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_9BACE7E1C74F2195` (`refresh_token`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -782,7 +791,7 @@ CREATE TABLE `refresh_tokens` (
 
 LOCK TABLES `refresh_tokens` WRITE;
 /*!40000 ALTER TABLE `refresh_tokens` DISABLE KEYS */;
-INSERT INTO `refresh_tokens` VALUES (1,'83740757246b8859db0cf4ee0cf2281f778b15d225a8272d36a5d053bd90488ea6e2764ad92333ba3863e1b618b260b1b48540921493ac4055d996b0c234e6c8','admin1@gmail.com','2024-01-12 23:47:58'),(2,'32f7d7dee22539321e8d200be6e4ac3576fbb6eefd79d5cb1d51e7cb485870bdcdcef89b18ea2cb912754edbabaf7eef3c8cb40554f75111ddc7dd0f9102b2a6','admin1@gmail.com','2024-01-13 00:00:41'),(3,'abf404048e7e1a08f127b24c2a3ed7b3716c8fb3b1f5da276ecbdf5f14cd58309411c12605a6c5ff087486dc967bdc08ddd3e169f19d80fe50cb7b9156416a5a','admin1@gmail.com','2024-01-13 00:22:08');
+INSERT INTO `refresh_tokens` VALUES (1,'83740757246b8859db0cf4ee0cf2281f778b15d225a8272d36a5d053bd90488ea6e2764ad92333ba3863e1b618b260b1b48540921493ac4055d996b0c234e6c8','admin1@gmail.com','2024-01-12 23:47:58'),(2,'32f7d7dee22539321e8d200be6e4ac3576fbb6eefd79d5cb1d51e7cb485870bdcdcef89b18ea2cb912754edbabaf7eef3c8cb40554f75111ddc7dd0f9102b2a6','admin1@gmail.com','2024-01-13 00:00:41'),(3,'abf404048e7e1a08f127b24c2a3ed7b3716c8fb3b1f5da276ecbdf5f14cd58309411c12605a6c5ff087486dc967bdc08ddd3e169f19d80fe50cb7b9156416a5a','admin1@gmail.com','2024-01-13 00:22:08'),(4,'86dc6fb9d0751942e9b4a82642315dcd9b5a3bfcfd972c68f9178d804f47856b386d4f1a56c15534cc294402b459103e270c2014028313f8a78f002fbf864176','admin1@gmail.com','2024-01-27 10:01:45'),(5,'275615774a787e7bd1d820299404302fe67d312a652dce0b0125c2df9e32332c78311a2d473f9c114d1c10728f368b7596bf365306801412ef2aeea8d61021fd','admin1@gmail.com','2024-01-27 11:03:22');
 /*!40000 ALTER TABLE `refresh_tokens` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -832,7 +841,7 @@ CREATE TABLE `social_network` (
   `image_code_fichier` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `nom` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `lien` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `affichage` int(11) NOT NULL,
+  `affichage` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `header_is_select` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `footer_is_select` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `contact_is_select` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -874,7 +883,7 @@ CREATE TABLE `sous_menu` (
   `deleted` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `user_ajout_id` int(11) DEFAULT NULL,
   `user_modif_id` int(11) DEFAULT NULL,
-  `position` int(11) NOT NULL,
+  `position` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `slug` longtext COLLATE utf8mb4_unicode_ci,
   `format_page` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -1048,4 +1057,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-01-06  3:16:16
+-- Dump completed on 2024-01-20 18:50:12
