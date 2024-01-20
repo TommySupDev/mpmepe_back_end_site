@@ -72,7 +72,7 @@ final class ApiPlatformEventPersonnaliseSubscriber implements EventSubscriberInt
 
         $entity = $event->getControllerResult();
 
-        if ($entity instanceof \stdClass) {
+        if ($entity instanceof \stdClass || $entity instanceof \ArrayObject) {
             return;
         }
 

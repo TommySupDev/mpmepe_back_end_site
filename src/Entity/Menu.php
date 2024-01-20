@@ -6,6 +6,7 @@ use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\Controller\AjouterMenuAction;
 use App\Controller\Delete\DeleteMenuAction;
+use App\Controller\ModifierPositionMenuAction;
 use App\InterfacePersonnalise\UserOwnedInterface;
 use App\Repository\MenuRepository;
 use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
@@ -52,7 +53,20 @@ use Doctrine\ORM\Mapping as ORM;
             security: "is_granted('ROLE_ADMIN')",
             controller: DeleteMenuAction::class,
             write: false
-        )
+        ),
+        new Post(
+            name: 'update_position_menus',
+            uriTemplate: '/menus/update/positions',
+            controller: ModifierPositionMenuAction::class,
+            deserialize: false,
+            validate: false,
+            write: false,
+            inputFormats: ['json' => ['application/json']],
+            security: "is_granted('ROLE_ADMIN')",
+            openapiContext: [
+                'summary' => "Modifie la position des menus",
+            ]
+        ),
     ]
 )]
 #[ApiFilter(OrderFilter::class, properties: ['id', 'name', 'header'])]

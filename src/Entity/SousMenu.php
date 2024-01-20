@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\Controller\Delete\DeleteSousMenuAction;
+use App\Controller\ModifierPositionSousMenuAction;
 use App\InterfacePersonnalise\UserOwnedInterface;
 use App\Repository\SousMenuRepository;
 use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
@@ -46,7 +47,20 @@ use Doctrine\ORM\Mapping as ORM;
             security: "is_granted('ROLE_ADMIN')",
             controller: DeleteSousMenuAction::class,
             write: false
-        )
+        ),
+        new Post(
+            name: 'update_position_sous_menus',
+            uriTemplate: '/sous_menus/update/positions',
+            controller: ModifierPositionSousMenuAction::class,
+            deserialize: false,
+            validate: false,
+            write: false,
+            inputFormats: ['json' => ['application/json']],
+            security: "is_granted('ROLE_ADMIN')",
+            openapiContext: [
+                'summary' => "Modifie la position des sous-menus",
+            ]
+        ),
     ]
 )]
 #[ApiFilter(OrderFilter::class, properties: ['id', 'name'])]

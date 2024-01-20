@@ -6,6 +6,7 @@ use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\Controller\AjouterHeaderAction;
 use App\Controller\Delete\DeleteHeaderAction;
+use App\Controller\ModifierPositionHeaderAction;
 use App\InterfacePersonnalise\UserOwnedInterface;
 use App\Repository\HeaderRepository;
 use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
@@ -51,7 +52,20 @@ use Doctrine\ORM\Mapping as ORM;
             security: "is_granted('ROLE_ADMIN')",
             controller: DeleteHeaderAction::class,
             write: false
-        )
+        ),
+        new Post(
+            name: 'update_position_headers',
+            uriTemplate: '/headers/update/positions',
+            controller: ModifierPositionHeaderAction::class,
+            deserialize: false,
+            validate: false,
+            write: false,
+            inputFormats: ['json' => ['application/json']],
+            security: "is_granted('ROLE_ADMIN')",
+            openapiContext: [
+                'summary' => "Modifie la position des headers",
+            ]
+        ),
     ]
 )]
 #[ApiFilter(OrderFilter::class, properties: ['id', 'name'])]
