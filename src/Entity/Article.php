@@ -148,7 +148,7 @@ class Article implements UserOwnedInterface
         'read:Article',
         'write:Article',
     ])]
-    private string|int|null $category = null;
+    private string|bool|null $category = null;
 
     #[ORM\Column(nullable: true)]
     private ?int $nbLiaison = null;
@@ -192,6 +192,10 @@ class Article implements UserOwnedInterface
         $this->dateAjout = new \DateTimeImmutable();
         $this->dateModif = new \DateTime();
         $this->deleted = "0";
+        $this->visibility = "1";
+        $this->isMention = "0";
+        $this->isFlashinfo = "0";
+        $this->category = "0";
     }
 
     public function getId(): ?int
@@ -302,14 +306,14 @@ class Article implements UserOwnedInterface
         return $this;
     }
 
-    public function getCategory(): ?int
+    public function isCategory(): ?bool
     {
         return $this->category;
     }
 
-    public function setCategory(string|int|null $category): static
+    public function setCategory(string|bool|null $category): static
     {
-        $this->category = (int) $category;
+        $this->category = ConvertValueToBoolService::convertValueToBool($category);
 
         return $this;
     }

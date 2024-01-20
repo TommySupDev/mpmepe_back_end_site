@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\Controller\Delete\DeleteUserAction;
+use App\Controller\MeAction;
 use App\InterfacePersonnalise\UserOwnedInterface;
 use App\Repository\UserRepository;
 use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
@@ -58,7 +59,17 @@ use Symfony\Component\Security\Core\User\UserInterface;
             security: "is_granted('ROLE_ADMIN')",
             controller: DeleteUserAction::class,
             write: false
-        )
+        ),
+        new GetCollection(
+            name: 'profil',
+            uriTemplate: '/profil',
+            controller: MeAction::class,
+            read: false,
+            security: "is_granted('ROLE_ADMIN')",
+            openapiContext: [
+                'summary' => "Récupère les informations de l'utilisateur connecté",
+            ]
+        ),
     ]
 )]
 #[UniqueEntity('email')]

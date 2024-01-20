@@ -66,6 +66,7 @@ class SousMenu implements UserOwnedInterface
         'read:SousMenu',
         'read:Header',
         'read:Menu',
+        'read:Page',
     ])]
     private ?int $id = null;
 
@@ -75,6 +76,7 @@ class SousMenu implements UserOwnedInterface
         'write:SousMenu',
         'read:Header',
         'read:Menu',
+        'read:Page',
     ])]
     private ?string $name = null;
 
@@ -106,6 +108,7 @@ class SousMenu implements UserOwnedInterface
         'write:SousMenu',
         'read:Header',
         'read:Menu',
+        'read:Page',
     ])]
     private string|int|null $position = null;
 
@@ -115,6 +118,7 @@ class SousMenu implements UserOwnedInterface
         'write:SousMenu',
         'read:Header',
         'read:Menu',
+        'read:Page',
     ])]
     private ?string $slug = null;
 
@@ -124,8 +128,17 @@ class SousMenu implements UserOwnedInterface
         'write:SousMenu',
         'read:Header',
         'read:Menu',
+        'read:Page',
     ])]
     private ?string $formatPage = null;
+
+    #[ORM\OneToOne(mappedBy: 'sousMenu')]
+    #[Groups([
+        'read:SousMenu',
+        'read:Header',
+        'read:Menu',
+    ])]
+    private ?Page $page = null;
 
     public function getId(): ?int
     {
@@ -188,6 +201,28 @@ class SousMenu implements UserOwnedInterface
     public function setFormatPage(?string $formatPage): static
     {
         $this->formatPage = $formatPage;
+
+        return $this;
+    }
+
+    public function getPage(): ?Page
+    {
+        return $this->page;
+    }
+
+    public function setPage(?Page $page): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($page === null && $this->page !== null) {
+            $this->page->setSousMenu(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($page !== null && $page->getSousMenu() !== $this) {
+            $page->setSousMenu($this);
+        }
+
+        $this->page = $page;
 
         return $this;
     }

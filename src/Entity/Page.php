@@ -22,6 +22,7 @@ use App\Utils\Traits\EntityTimestampTrait;
 use App\Utils\Traits\UserAjoutModifTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -70,6 +71,8 @@ class Page implements UserOwnedInterface
     #[Groups([
         'read:Page',
         'read:PageHeader',
+        'read:Menu',
+        'read:SousMenu',
     ])]
     private ?int $id = null;
 
@@ -77,6 +80,8 @@ class Page implements UserOwnedInterface
     #[Groups([
         'read:Page',
         'read:PageHeader',
+        'read:Menu',
+        'read:SousMenu',
     ])]
     private ?string $imageCodeFichier = null;
 
@@ -85,6 +90,8 @@ class Page implements UserOwnedInterface
         'read:Page',
         'write:Page',
         'read:PageHeader',
+        'read:Menu',
+        'read:SousMenu',
     ])]
     private ?string $titre = null;
 
@@ -97,6 +104,8 @@ class Page implements UserOwnedInterface
     #[Groups([
         'read:Page',
         'read:PageHeader',
+        'read:Menu',
+        'read:SousMenu',
     ])]
     public array $fichiers = [];
 
@@ -113,6 +122,32 @@ class Page implements UserOwnedInterface
         'read:Page',
     ])]
     private ?User $userModif = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups([
+        'read:Page',
+        'write:Page',
+        'read:PageHeader',
+        'read:Menu',
+        'read:SousMenu',
+    ])]
+    private ?string $contenu = null;
+
+    #[ORM\OneToOne(inversedBy: 'page')]
+    #[Groups([
+        'read:Page',
+        'write:Page',
+        'read:PageHeader',
+    ])]
+    private ?Menu $menu = null;
+
+    #[ORM\OneToOne(inversedBy: 'page')]
+    #[Groups([
+        'read:Page',
+        'write:Page',
+        'read:PageHeader',
+    ])]
+    private ?SousMenu $sousMenu = null;
 
     public function __construct()
     {
@@ -208,6 +243,42 @@ class Page implements UserOwnedInterface
     public function setFichiers(array $fichiers)
     {
         $this->fichiers = $fichiers;
+        return $this;
+    }
+
+    public function getContenu(): ?string
+    {
+        return $this->contenu;
+    }
+
+    public function setContenu(?string $contenu): static
+    {
+        $this->contenu = $contenu;
+
+        return $this;
+    }
+
+    public function getMenu(): ?Menu
+    {
+        return $this->menu;
+    }
+
+    public function setMenu(?Menu $menu): static
+    {
+        $this->menu = $menu;
+
+        return $this;
+    }
+
+    public function getSousMenu(): ?SousMenu
+    {
+        return $this->sousMenu;
+    }
+
+    public function setSousMenu(?SousMenu $sousMenu): static
+    {
+        $this->sousMenu = $sousMenu;
+
         return $this;
     }
 

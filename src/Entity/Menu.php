@@ -72,6 +72,7 @@ class Menu implements UserOwnedInterface
         'read:Menu',
         'read:Header',
         'read:SousMenu',
+        'read:Page',
     ])]
     private ?int $id = null;
 
@@ -81,6 +82,7 @@ class Menu implements UserOwnedInterface
         'write:Menu',
         'read:Header',
         'read:SousMenu',
+        'read:Page',
     ])]
     private ?string $name = null;
 
@@ -108,6 +110,7 @@ class Menu implements UserOwnedInterface
         'write:Menu',
         'read:Header',
         'read:SousMenu',
+        'read:Page',
     ])]
     private ?string $description = null;
 
@@ -116,6 +119,7 @@ class Menu implements UserOwnedInterface
         'read:Menu',
         'read:Header',
         'read:SousMenu',
+        'read:Page',
     ])]
     private ?string $imageCodeFichier = null;
 
@@ -123,6 +127,7 @@ class Menu implements UserOwnedInterface
         'read:Menu',
         'read:Header',
         'read:SousMenu',
+        'read:Page',
     ])]
     public array $fichiers = [];
 
@@ -149,6 +154,7 @@ class Menu implements UserOwnedInterface
         'write:Menu',
         'read:Header',
         'read:SousMenu',
+        'read:Page',
     ])]
     private ?string $lien = null;
 
@@ -158,6 +164,7 @@ class Menu implements UserOwnedInterface
         'write:Menu',
         'read:Header',
         'read:SousMenu',
+        'read:Page',
     ])]
     private string|int|null $position = null;
 
@@ -167,6 +174,7 @@ class Menu implements UserOwnedInterface
         'write:Menu',
         'read:Header',
         'read:SousMenu',
+        'read:Page',
     ])]
     private ?string $slug = null;
 
@@ -176,8 +184,17 @@ class Menu implements UserOwnedInterface
         'write:Menu',
         'read:Header',
         'read:SousMenu',
+        'read:Page',
     ])]
     private ?string $formatPage = null;
+
+    #[ORM\OneToOne(mappedBy: 'menu')]
+    #[Groups([
+        'read:Menu',
+        'read:Header',
+        'read:SousMenu',
+    ])]
+    private ?Page $page = null;
 
     public function __construct()
     {
@@ -344,6 +361,28 @@ class Menu implements UserOwnedInterface
     public function setFormatPage(?string $formatPage): static
     {
         $this->formatPage = $formatPage;
+
+        return $this;
+    }
+
+    public function getPage(): ?Page
+    {
+        return $this->page;
+    }
+
+    public function setPage(?Page $page): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($page === null && $this->page !== null) {
+            $this->page->setMenu(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($page !== null && $page->getMenu() !== $this) {
+            $page->setMenu($this);
+        }
+
+        $this->page = $page;
 
         return $this;
     }

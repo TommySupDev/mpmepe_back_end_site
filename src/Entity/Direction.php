@@ -130,6 +130,15 @@ class Direction implements UserOwnedInterface
     ])]
     private ?User $userModif = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups([
+        'read:Direction',
+        'write:Direction',
+        'read:Dirigeant',
+        'read:Ministere',
+    ])]
+    private ?string $description = null;
+
     public function __construct()
     {
         $this->dirigeants = new ArrayCollection();
@@ -229,6 +238,18 @@ class Direction implements UserOwnedInterface
     public function setNbLiaison(?int $nbLiaison): static
     {
         $this->nbLiaison = $nbLiaison;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): static
+    {
+        $this->description = $description;
 
         return $this;
     }
