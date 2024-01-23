@@ -29,7 +29,7 @@ final class ApiPlatformEventPersonnaliseSubscriber implements EventSubscriberInt
     {
         return [
             KernelEvents::VIEW => [
-                ['insertUserAjout', EventPriorities::PRE_WRITE],
+                ['insertUserAjout', EventPriorities::POST_WRITE],
                 ['writeHistorique', EventPriorities::POST_WRITE]
             ]
         ];
@@ -56,6 +56,9 @@ final class ApiPlatformEventPersonnaliseSubscriber implements EventSubscriberInt
             if (!$request->request->get('resourceId')) {
                 // Cas d'un ajout
                 $entity->setUserAjout($this->security->getUser());
+
+                $this->entityManager->flush();
+                $this->entityManager->refresh($entity);
                 $event->setControllerResult($entity);
             }
         }
