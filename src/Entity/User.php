@@ -31,6 +31,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Scheb\TwoFactorBundle\Model\Email\TwoFactorInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(
@@ -76,7 +77,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ApiFilter(DateFilter::class, properties: ['dateAjout', 'dateModif'])]
 #[ApiFilter(OrderFilter::class, properties: ['id', 'email'])]
 #[ApiFilter(SearchFilter::class, properties: ['deleted' => 'exact', 'userAjout' => 'exact', 'userModif' => 'exact'])]
-class User implements UserInterface, PasswordAuthenticatedUserInterface, UserOwnedInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, UserOwnedInterface, TwoFactorInterface
 {
     use EntityTimestampTrait;
     use UserAjoutModifTrait;
@@ -110,7 +111,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, UserOwn
     ])]
     private ?int $id = null;
 
-    #[ORM\Column(length: 180, unique: true)]
+    #[ORM\Column(type: 'string', length: 180, unique: true)]
     #[Groups([
         'read:User',
         'write:User',
@@ -201,6 +202,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, UserOwn
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: true)]
     private ?User $userModif = null;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $authCode = null;
 
     public function __construct()
     {
@@ -377,6 +381,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, UserOwn
         }
 
         return $this;
+    }
+
+    public function isEmailAuthEnabled(): bool
+    {
+        return true; // This can be a persisted field to switch email code authentication on/off
+    }
+
+    public function getEmailAuthRecipient(): string
+    {
+        return (string) $this->email;
+    }
+
+    public function getEmailAuthCode(): string
+    {
+        if (null === $this->authCode) {
+            throw new \LogicException('The email authentication code was not set');
+        }
+
+        return $this->authCode;
+    }
+
+    public function setEmailAuthCode(string $authCode): void
+    {
+        $this->authCode = $authCode;
     }
 
 }
