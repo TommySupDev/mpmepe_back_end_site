@@ -167,6 +167,14 @@ class Ministere implements UserOwnedInterface
     ])]
     private ?User $userModif = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups([
+        'read:Ministere',
+        'read:Direction',
+        'read:Dirigeant',
+    ])]
+    private ?string $logoArmoirie = null;
+
     public function __construct()
     {
         $this->dirigeants = new ArrayCollection();
@@ -321,6 +329,19 @@ class Ministere implements UserOwnedInterface
     public function setFichiers(array $fichiers)
     {
         $this->fichiers = $fichiers;
+
+        return $this;
+    }
+
+    public function getLogoArmoirie(): ?string
+    {
+        return $this->logoArmoirie;
+    }
+
+    public function setLogoArmoirie(?string $logoArmoirie): static
+    {
+        $this->logoArmoirie = $logoArmoirie;
+
         return $this;
     }
 

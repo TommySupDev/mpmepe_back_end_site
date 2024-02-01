@@ -75,6 +75,31 @@ final class AjouterMinistereAction extends AbstractController
                         $ministere->setLogoCodeFichier($reference);
                     }
 
+                    // Enregistrement du logoArmoirie du ministere
+                    if (array_key_exists('logoArmoirie', $fichierUploades)) {
+                        // On s'assure que la reference est unique pour ne pas lier d'autres fichiers
+                        do {
+                            $reference = $this->randomStringGeneratorServices->random_alphanumeric(16);
+
+                            $existFiles = $this->filesRepository->findBy([
+                                'referenceCode' => $reference
+                            ]);
+
+                        } while (count($existFiles) > 0);
+
+                        if ($fichierUploades['logoArmoirie'] instanceof UploadedFile) {
+                            $this->fileUploader->saveFile(
+                                $fichierUploades['logoArmoirie'],
+                                false,
+                                Ministere::class,
+                                null,
+                                $reference
+                            );
+                        }
+
+                        $ministere->setLogoArmoirie($reference);
+                    }
+
                 }
 
                 $this->entityManager->persist($ministere);
@@ -148,6 +173,35 @@ final class AjouterMinistereAction extends AbstractController
                         $ministere->setLogoCodeFichier($reference);
                     }
 
+                    // Enregistrement ou modification du logoArmoirie du ministere
+                    if (array_key_exists('logoArmoirie', $request->files->all())) {
+                        $reference = $ministere->getLogoArmoirie();
+
+                        if ($reference === null || trim($reference) === '') {
+                            // On s'assure que la reference est unique pour ne pas lier d'autres fichiers
+                            do {
+                                $reference = $this->randomStringGeneratorServices->random_alphanumeric(16);
+
+                                $existFiles = $this->filesRepository->findBy([
+                                    'referenceCode' => $reference
+                                ]);
+
+                            } while (count($existFiles) > 0);
+                        }
+
+                        if ($request->files->all()['logoArmoirie'] instanceof UploadedFile) {
+                            $this->fileUploader->saveFile(
+                                $request->files->all()['logoArmoirie'],
+                                false,
+                                Ministere::class,
+                                $reference,
+                                $reference
+                            );
+                        }
+
+                        $ministere->setLogoArmoirie($reference);
+                    }
+
                 }  // Fin gestion des fichiers
 
                 $this->entityManager->flush();
@@ -162,14 +216,21 @@ final class AjouterMinistereAction extends AbstractController
                 ]
             );
 
+            $fileLogoArmoirie = $this->filesRepository->findOneBy(
+                [
+                    'referenceCode' => $ministere->getLogoArmoirie()
+                ]
+            );
+
             $serverUrl = $this->getParameter('serverUrl');
 
             $fichiers = [
-                'logoFichier' => $fileLogo ? $serverUrl.$fileLogo->getLocation().$fileLogo->getFilename() : null
+                'logoFichier' => $fileLogo ? $serverUrl.$fileLogo->getLocation().$fileLogo->getFilename() : null,
+                'logoArmoirie' => $fileLogoArmoirie ? $serverUrl.$fileLogoArmoirie->getLocation().$fileLogoArmoirie->getFilename() : null,
             ];
             $ministere->setFichiers($fichiers);
 
-            // On retourne un objet ArrayObject
+            // On retourne un objet
             $data = $ministere;
         }
 

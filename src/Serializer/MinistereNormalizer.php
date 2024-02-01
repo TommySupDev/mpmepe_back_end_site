@@ -38,10 +38,17 @@ final class MinistereNormalizer implements ContextAwareNormalizerInterface, Norm
             ]
         );
 
+        $fileLogoArmoirie = $this->filesRepository->findOneBy(
+            [
+                'referenceCode' => $object->getLogoArmoirie()
+            ]
+        );
+
         $serverUrl = $this->parameterBag->get('serverUrl');
 
         $fichiers = [
-            'logoFichier' => $fileLogo ? $serverUrl.$fileLogo->getLocation().$fileLogo->getFilename() : null
+            'logoFichier' => $fileLogo ? $serverUrl.$fileLogo->getLocation().$fileLogo->getFilename() : null,
+            'logoArmoirie' => $fileLogoArmoirie ? $serverUrl.$fileLogoArmoirie->getLocation().$fileLogoArmoirie->getFilename() : null,
         ];
 
         $object->setFichiers($fichiers);
