@@ -21,6 +21,8 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Utils\Traits\EntityTimestampTrait;
 use App\Utils\Traits\UserAjoutModifTrait;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -175,6 +177,17 @@ class SousMenu implements UserOwnedInterface
     ])]
     public array $fichiers = [];
 
+    #[ORM\OneToMany(mappedBy: 'sousMenu', targetEntity: Article::class)]
+    private Collection $articles;
+
+    public function __construct()
+    {
+        $this->articles = new ArrayCollection();
+        $this->dateAjout = new \DateTimeImmutable();
+        $this->dateModif = new \DateTime();
+        $this->deleted = "0";
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -289,6 +302,36 @@ class SousMenu implements UserOwnedInterface
     public function setFichiers(array $fichiers)
     {
         $this->fichiers = $fichiers;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Article>
+     */
+    public function getArticles(): Collection
+    {
+        return $this->articles;
+    }
+
+    public function addArticle(Article $article): static
+    {
+        if (!$this->articles->contains($article)) {
+            $this->articles->add($article);
+            $article->setSousMenu($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticle(Article $article): static
+    {
+        if ($this->articles->removeElement($article)) {
+            // set the owning side to null (unless already changed)
+            if ($article->getSousMenu() === $this) {
+                $article->setSousMenu(null);
+            }
+        }
 
         return $this;
     }
