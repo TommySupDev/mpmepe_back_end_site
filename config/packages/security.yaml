@@ -22,7 +22,6 @@ security:
         login:
             pattern: ^/api/login
             stateless: false
-            anonymous: true
             json_login:
                 check_path: /api/login_check
                 username_path: email
@@ -43,7 +42,7 @@ security:
                 authentication_required_handler: App\Security\TwoFactorAuthenticationRequiredHandler
                 success_handler: App\Security\TwoFactorAuthenticationSuccessHandler
                 failure_handler: App\Security\TwoFactorAuthenticationFailureHandler
-                auth_code_parameter_name: data.authCode    # Name of the parameter for the two-factor authentication code: _auth_code is the default value
+                auth_code_parameter_name: authCode    # Name of the parameter for the two-factor authentication code: _auth_code is the default value
         api:
             pattern: ^/api
             stateless: true
