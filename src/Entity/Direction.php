@@ -139,6 +139,18 @@ class Direction implements UserOwnedInterface
     ])]
     private ?string $description = null;
 
+    /**
+     * Valeurs possibles: central, technique et deconcentre
+     */
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups([
+        'read:Direction',
+        'write:Direction',
+        'read:Dirigeant',
+        'read:Ministere',
+    ])]
+    private ?string $categorieDirection = null;
+
     public function __construct()
     {
         $this->dirigeants = new ArrayCollection();
@@ -250,6 +262,18 @@ class Direction implements UserOwnedInterface
     public function setDescription(string $description): static
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getCategorieDirection(): ?string
+    {
+        return $this->categorieDirection;
+    }
+
+    public function setCategorieDirection(?string $categorieDirection): static
+    {
+        $this->categorieDirection = $categorieDirection;
 
         return $this;
     }
