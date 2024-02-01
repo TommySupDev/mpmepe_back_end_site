@@ -20,6 +20,8 @@ class AppConstants
 
     final public const DIRIGEANT_FOLDER = 'uploads/dirigeant/';
 
+    final public const SOUS_MENU_FOLDER = 'uploads/sous_menu/';
+
     final public const DEFAULT_FOLDER = 'uploads/default/';
 
 }

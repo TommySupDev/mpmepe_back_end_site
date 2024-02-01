@@ -210,6 +210,15 @@ class Menu implements UserOwnedInterface
     ])]
     private ?Page $page = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups([
+        'read:Menu',
+        'read:Header',
+        'read:SousMenu',
+        'read:Page',
+    ])]
+    private ?string $backgroundImage = null;
+
     public function __construct()
     {
         $this->sousMenus = new ArrayCollection();
@@ -328,6 +337,7 @@ class Menu implements UserOwnedInterface
     public function setFichiers(array $fichiers)
     {
         $this->fichiers = $fichiers;
+
         return $this;
     }
 
@@ -397,6 +407,18 @@ class Menu implements UserOwnedInterface
         }
 
         $this->page = $page;
+
+        return $this;
+    }
+
+    public function getBackgroundImage(): ?string
+    {
+        return $this->backgroundImage;
+    }
+
+    public function setBackgroundImage(?string $backgroundImage): static
+    {
+        $this->backgroundImage = $backgroundImage;
 
         return $this;
     }

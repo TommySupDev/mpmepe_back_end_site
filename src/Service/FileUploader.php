@@ -124,6 +124,8 @@ class FileUploader
                 return AppConstants::GALERIE_FOLDER;
             case 'dirigeant':
                 return AppConstants::DIRIGEANT_FOLDER;
+            case 'sous_menu':
+                return AppConstants::SOUS_MENU_FOLDER;
             default:
                 return AppConstants::DEFAULT_FOLDER;
         }
