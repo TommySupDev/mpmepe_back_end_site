@@ -22,6 +22,19 @@ class AppConstants
 
     final public const SOUS_MENU_FOLDER = 'uploads/sous_menu/';
 
-    final public const DEFAULT_FOLDER = 'uploads/default/';
+    final public const BENIN_REVELE_FOLDER = 'uploads/benin_revele/';
 
+    final public const MULTIMEDIA_FOLDER = 'uploads/multimedia/';
+
+    final public const PRESTATION_FOLDER = 'uploads/prestation/';
+
+    final public const PRESTATION_DETAIL_FOLDER = 'uploads/prestation_detail/';
+
+    final public const PROGRAMME_FOLDER = 'uploads/programme/';
+
+    final public const PROGRAMME_DETAIL_FOLDER = 'uploads/programme_detail/';
+
+    final public const TYPE_DIRECTION_FOLDER = 'uploads/type_direction/';
+
+    final public const DEFAULT_FOLDER = 'uploads/default/';
 }

@@ -139,17 +139,15 @@ class Direction implements UserOwnedInterface
     ])]
     private ?string $description = null;
 
-    /**
-     * Valeurs possibles: central, technique et deconcentre
-     */
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\ManyToOne(inversedBy: 'directions')]
     #[Groups([
         'read:Direction',
         'write:Direction',
         'read:Dirigeant',
         'read:Ministere',
     ])]
-    private ?string $categorieDirection = null;
+    #[Assert\NotBlank]
+    private ?TypeDirection $typeDirection = null;
 
     public function __construct()
     {
@@ -266,14 +264,14 @@ class Direction implements UserOwnedInterface
         return $this;
     }
 
-    public function getCategorieDirection(): ?string
+    public function getTypeDirection(): ?TypeDirection
     {
-        return $this->categorieDirection;
+        return $this->typeDirection;
     }
 
-    public function setCategorieDirection(?string $categorieDirection): static
+    public function setTypeDirection(?TypeDirection $typeDirection): static
     {
-        $this->categorieDirection = $categorieDirection;
+        $this->typeDirection = $typeDirection;
 
         return $this;
     }

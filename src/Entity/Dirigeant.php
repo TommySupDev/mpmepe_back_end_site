@@ -103,7 +103,7 @@ class Dirigeant implements UserOwnedInterface
     ])]
     private ?\DateTimeInterface $finFonction = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[ORM\Column(type: Types::TEXT)]
     #[Groups([
         'read:Dirigeant',
         'write:Dirigeant',
@@ -121,7 +121,7 @@ class Dirigeant implements UserOwnedInterface
     ])]
     private ?string $lienDecret = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[ORM\Column(type: Types::TEXT)]
     #[Groups([
         'read:Dirigeant',
         'write:Dirigeant',

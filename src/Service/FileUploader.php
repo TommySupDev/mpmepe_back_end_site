@@ -126,6 +126,20 @@ class FileUploader
                 return AppConstants::DIRIGEANT_FOLDER;
             case 'sous_menu':
                 return AppConstants::SOUS_MENU_FOLDER;
+            case 'benin_revele':
+                return AppConstants::BENIN_REVELE_FOLDER;
+            case 'multimedia':
+                return AppConstants::MULTIMEDIA_FOLDER;
+            case 'prestation':
+                return AppConstants::PRESTATION_FOLDER;
+            case 'prestation_detail':
+                return AppConstants::PRESTATION_DETAIL_FOLDER;
+            case 'programme':
+                return AppConstants::PROGRAMME_FOLDER;
+            case 'programme_detail':
+                return AppConstants::PROGRAMME_DETAIL_FOLDER;
+            case 'type_direction':
+                return AppConstants::TYPE_DIRECTION_FOLDER;
             default:
                 return AppConstants::DEFAULT_FOLDER;
         }
