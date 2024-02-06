@@ -41,6 +41,7 @@ use Doctrine\ORM\Mapping as ORM;
             controller: AjouterContactAction::class,
             write: false,
             validationContext: ['groups' => ['Default']],
+            inputFormats: ['multipart' => ['multipart/form-data']],
 //            security: "is_granted('ROLE_ADMIN')"
         ),
 //        new Put(
