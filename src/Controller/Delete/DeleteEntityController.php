@@ -5,6 +5,7 @@ namespace App\Controller\Delete;
 use App\Entity\Article;
 use App\Entity\ArticleGalerie;
 use App\Entity\ArticleTag;
+use App\Entity\BeninRevele;
 use App\Entity\CategorieDocument;
 use App\Entity\Contact;
 use App\Entity\Copyright;
@@ -18,12 +19,18 @@ use App\Entity\Header;
 use App\Entity\Historique;
 use App\Entity\Menu;
 use App\Entity\Ministere;
+use App\Entity\Multimedia;
 use App\Entity\Page;
 use App\Entity\PageHeader;
+use App\Entity\Prestation;
+use App\Entity\PrestationDetail;
+use App\Entity\Programme;
+use App\Entity\ProgrammeDetail;
 use App\Entity\Role;
 use App\Entity\SocialNetwork;
 use App\Entity\SousMenu;
 use App\Entity\Tag;
+use App\Entity\TypeDirection;
 use App\Entity\User;
 use App\Entity\UserRole;
 use App\Entity\ValeurDemande;
@@ -2079,6 +2086,608 @@ class DeleteEntityController extends AbstractController
                     $historique = (new Historique())
                         ->setOperation("Suppression d'un enregistrement")
                         ->setNomTable("ValeurDemande")
+                        ->setIdTable($entity->getId())
+                        ->setUser($this->getUser())
+                    ;
+
+                    $this->entityManager->persist($historique);
+
+                    // Suppression de l'entité
+                    $this->controlDeletionEntityService->controlDeletion($entity);
+                }
+            } else {
+                return new Response(json_encode([
+                    'message' => 'Paramètres manquants: mettez soit id ou ids'
+                ]), Response::HTTP_BAD_REQUEST);
+            }
+
+            // Répondre avec une réponse 200 OK ou autre réponse appropriée
+            return new Response(json_encode([
+                'message' => 'Suppression réussie'
+            ]), Response::HTTP_OK);
+
+        } else {
+            // Le Content-Type n'est pas application/json
+            return new Response(json_encode([
+                'message' => 'Le Content-Type doit être: application/json'
+            ]), Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    #[Route('/benin_reveles/delete', name: 'app_benin_reveles_delete', methods: ['DELETE'])]
+    public function deleteBeninRevele(Request $request): Response
+    {
+        if ($request->headers->get('content-type') == "application/json") {
+            $requestBodyDecode = json_decode($request->getContent(), true);
+
+            // Récupérer les IDs des entités à supprimer
+            $id = null;
+            $ids = null;
+
+            if (array_key_exists('id', $requestBodyDecode)) {
+                $id = $requestBodyDecode['id'];   // Suppression d'un seul élément
+            }
+
+            if (array_key_exists('ids', $requestBodyDecode)) {
+                $ids = $requestBodyDecode['ids']; // Suppression groupée
+            }
+
+            if ($id !== null && $ids !== null) {
+                return new Response(json_encode([
+                    'message' => "Mettez soit la clé id ou la clé ids: la présence des deux clés id et ids n'est pas autorisée"
+                ]), Response::HTTP_BAD_REQUEST);
+            }
+
+            // Si on a des IDs, on supprime en groupé
+            if ($ids && \is_array($ids)) {
+                foreach ($ids as $idToDelete) {
+                    $entity = $this->entityManager
+                        ->getRepository(BeninRevele::class)
+                        ->find($idToDelete)
+                    ;
+
+                    if ($entity) {
+                        // Enregistrement dans la table historique
+                        $historique = (new Historique())
+                            ->setOperation("Suppression d'un enregistrement")
+                            ->setNomTable("BeninRevele")
+                            ->setIdTable($entity->getId())
+                            ->setUser($this->getUser())
+                        ;
+
+                        $this->entityManager->persist($historique);
+
+                        // Suppression de l'entité
+                        $this->controlDeletionEntityService->controlDeletion($entity);
+                    }
+                }
+            } else if ($id) { // Si on a un seul ID, on supprime cet élément
+                $entity = $this->entityManager
+                    ->getRepository(BeninRevele::class)
+                    ->find($id)
+                ;
+
+                if ($entity) {
+                    // Enregistrement dans la table historique
+                    $historique = (new Historique())
+                        ->setOperation("Suppression d'un enregistrement")
+                        ->setNomTable("BeninRevele")
+                        ->setIdTable($entity->getId())
+                        ->setUser($this->getUser())
+                    ;
+
+                    $this->entityManager->persist($historique);
+
+                    // Suppression de l'entité
+                    $this->controlDeletionEntityService->controlDeletion($entity);
+                }
+            } else {
+                return new Response(json_encode([
+                    'message' => 'Paramètres manquants: mettez soit id ou ids'
+                ]), Response::HTTP_BAD_REQUEST);
+            }
+
+            // Répondre avec une réponse 200 OK ou autre réponse appropriée
+            return new Response(json_encode([
+                'message' => 'Suppression réussie'
+            ]), Response::HTTP_OK);
+
+        } else {
+            // Le Content-Type n'est pas application/json
+            return new Response(json_encode([
+                'message' => 'Le Content-Type doit être: application/json'
+            ]), Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    #[Route('/multimedias/delete', name: 'app_multimedias_delete', methods: ['DELETE'])]
+    public function deleteMultimedia(Request $request): Response
+    {
+        if ($request->headers->get('content-type') == "application/json") {
+            $requestBodyDecode = json_decode($request->getContent(), true);
+
+            // Récupérer les IDs des entités à supprimer
+            $id = null;
+            $ids = null;
+
+            if (array_key_exists('id', $requestBodyDecode)) {
+                $id = $requestBodyDecode['id'];   // Suppression d'un seul élément
+            }
+
+            if (array_key_exists('ids', $requestBodyDecode)) {
+                $ids = $requestBodyDecode['ids']; // Suppression groupée
+            }
+
+            if ($id !== null && $ids !== null) {
+                return new Response(json_encode([
+                    'message' => "Mettez soit la clé id ou la clé ids: la présence des deux clés id et ids n'est pas autorisée"
+                ]), Response::HTTP_BAD_REQUEST);
+            }
+
+            // Si on a des IDs, on supprime en groupé
+            if ($ids && \is_array($ids)) {
+                foreach ($ids as $idToDelete) {
+                    $entity = $this->entityManager
+                        ->getRepository(Multimedia::class)
+                        ->find($idToDelete)
+                    ;
+
+                    if ($entity) {
+                        // Enregistrement dans la table historique
+                        $historique = (new Historique())
+                            ->setOperation("Suppression d'un enregistrement")
+                            ->setNomTable("Multimedia")
+                            ->setIdTable($entity->getId())
+                            ->setUser($this->getUser())
+                        ;
+
+                        $this->entityManager->persist($historique);
+
+                        // Suppression de l'entité
+                        $this->controlDeletionEntityService->controlDeletion($entity);
+                    }
+                }
+            } else if ($id) { // Si on a un seul ID, on supprime cet élément
+                $entity = $this->entityManager
+                    ->getRepository(Multimedia::class)
+                    ->find($id)
+                ;
+
+                if ($entity) {
+                    // Enregistrement dans la table historique
+                    $historique = (new Historique())
+                        ->setOperation("Suppression d'un enregistrement")
+                        ->setNomTable("Multimedia")
+                        ->setIdTable($entity->getId())
+                        ->setUser($this->getUser())
+                    ;
+
+                    $this->entityManager->persist($historique);
+
+                    // Suppression de l'entité
+                    $this->controlDeletionEntityService->controlDeletion($entity);
+                }
+            } else {
+                return new Response(json_encode([
+                    'message' => 'Paramètres manquants: mettez soit id ou ids'
+                ]), Response::HTTP_BAD_REQUEST);
+            }
+
+            // Répondre avec une réponse 200 OK ou autre réponse appropriée
+            return new Response(json_encode([
+                'message' => 'Suppression réussie'
+            ]), Response::HTTP_OK);
+
+        } else {
+            // Le Content-Type n'est pas application/json
+            return new Response(json_encode([
+                'message' => 'Le Content-Type doit être: application/json'
+            ]), Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    #[Route('/prestations/delete', name: 'app_prestations_delete', methods: ['DELETE'])]
+    public function deletePrestation(Request $request): Response
+    {
+        if ($request->headers->get('content-type') == "application/json") {
+            $requestBodyDecode = json_decode($request->getContent(), true);
+
+            // Récupérer les IDs des entités à supprimer
+            $id = null;
+            $ids = null;
+
+            if (array_key_exists('id', $requestBodyDecode)) {
+                $id = $requestBodyDecode['id'];   // Suppression d'un seul élément
+            }
+
+            if (array_key_exists('ids', $requestBodyDecode)) {
+                $ids = $requestBodyDecode['ids']; // Suppression groupée
+            }
+
+            if ($id !== null && $ids !== null) {
+                return new Response(json_encode([
+                    'message' => "Mettez soit la clé id ou la clé ids: la présence des deux clés id et ids n'est pas autorisée"
+                ]), Response::HTTP_BAD_REQUEST);
+            }
+
+            // Si on a des IDs, on supprime en groupé
+            if ($ids && \is_array($ids)) {
+                foreach ($ids as $idToDelete) {
+                    $entity = $this->entityManager
+                        ->getRepository(Prestation::class)
+                        ->find($idToDelete)
+                    ;
+
+                    if ($entity) {
+                        // Enregistrement dans la table historique
+                        $historique = (new Historique())
+                            ->setOperation("Suppression d'un enregistrement")
+                            ->setNomTable("Prestation")
+                            ->setIdTable($entity->getId())
+                            ->setUser($this->getUser())
+                        ;
+
+                        $this->entityManager->persist($historique);
+
+                        // Suppression de l'entité
+                        $this->controlDeletionEntityService->controlDeletion($entity);
+                    }
+                }
+            } else if ($id) { // Si on a un seul ID, on supprime cet élément
+                $entity = $this->entityManager
+                    ->getRepository(Prestation::class)
+                    ->find($id)
+                ;
+
+                if ($entity) {
+                    // Enregistrement dans la table historique
+                    $historique = (new Historique())
+                        ->setOperation("Suppression d'un enregistrement")
+                        ->setNomTable("Prestation")
+                        ->setIdTable($entity->getId())
+                        ->setUser($this->getUser())
+                    ;
+
+                    $this->entityManager->persist($historique);
+
+                    // Suppression de l'entité
+                    $this->controlDeletionEntityService->controlDeletion($entity);
+                }
+            } else {
+                return new Response(json_encode([
+                    'message' => 'Paramètres manquants: mettez soit id ou ids'
+                ]), Response::HTTP_BAD_REQUEST);
+            }
+
+            // Répondre avec une réponse 200 OK ou autre réponse appropriée
+            return new Response(json_encode([
+                'message' => 'Suppression réussie'
+            ]), Response::HTTP_OK);
+
+        } else {
+            // Le Content-Type n'est pas application/json
+            return new Response(json_encode([
+                'message' => 'Le Content-Type doit être: application/json'
+            ]), Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    #[Route('/prestation_details/delete', name: 'app_prestation_details_delete', methods: ['DELETE'])]
+    public function deletePrestationDetail(Request $request): Response
+    {
+        if ($request->headers->get('content-type') == "application/json") {
+            $requestBodyDecode = json_decode($request->getContent(), true);
+
+            // Récupérer les IDs des entités à supprimer
+            $id = null;
+            $ids = null;
+
+            if (array_key_exists('id', $requestBodyDecode)) {
+                $id = $requestBodyDecode['id'];   // Suppression d'un seul élément
+            }
+
+            if (array_key_exists('ids', $requestBodyDecode)) {
+                $ids = $requestBodyDecode['ids']; // Suppression groupée
+            }
+
+            if ($id !== null && $ids !== null) {
+                return new Response(json_encode([
+                    'message' => "Mettez soit la clé id ou la clé ids: la présence des deux clés id et ids n'est pas autorisée"
+                ]), Response::HTTP_BAD_REQUEST);
+            }
+
+            // Si on a des IDs, on supprime en groupé
+            if ($ids && \is_array($ids)) {
+                foreach ($ids as $idToDelete) {
+                    $entity = $this->entityManager
+                        ->getRepository(PrestationDetail::class)
+                        ->find($idToDelete)
+                    ;
+
+                    if ($entity) {
+                        // Enregistrement dans la table historique
+                        $historique = (new Historique())
+                            ->setOperation("Suppression d'un enregistrement")
+                            ->setNomTable("PrestationDetail")
+                            ->setIdTable($entity->getId())
+                            ->setUser($this->getUser())
+                        ;
+
+                        $this->entityManager->persist($historique);
+
+                        // Suppression de l'entité
+                        $this->controlDeletionEntityService->controlDeletion($entity);
+                    }
+                }
+            } else if ($id) { // Si on a un seul ID, on supprime cet élément
+                $entity = $this->entityManager
+                    ->getRepository(PrestationDetail::class)
+                    ->find($id)
+                ;
+
+                if ($entity) {
+                    // Enregistrement dans la table historique
+                    $historique = (new Historique())
+                        ->setOperation("Suppression d'un enregistrement")
+                        ->setNomTable("PrestationDetail")
+                        ->setIdTable($entity->getId())
+                        ->setUser($this->getUser())
+                    ;
+
+                    $this->entityManager->persist($historique);
+
+                    // Suppression de l'entité
+                    $this->controlDeletionEntityService->controlDeletion($entity);
+                }
+            } else {
+                return new Response(json_encode([
+                    'message' => 'Paramètres manquants: mettez soit id ou ids'
+                ]), Response::HTTP_BAD_REQUEST);
+            }
+
+            // Répondre avec une réponse 200 OK ou autre réponse appropriée
+            return new Response(json_encode([
+                'message' => 'Suppression réussie'
+            ]), Response::HTTP_OK);
+
+        } else {
+            // Le Content-Type n'est pas application/json
+            return new Response(json_encode([
+                'message' => 'Le Content-Type doit être: application/json'
+            ]), Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    #[Route('/programmes/delete', name: 'app_programmes_delete', methods: ['DELETE'])]
+    public function deleteProgramme(Request $request): Response
+    {
+        if ($request->headers->get('content-type') == "application/json") {
+            $requestBodyDecode = json_decode($request->getContent(), true);
+
+            // Récupérer les IDs des entités à supprimer
+            $id = null;
+            $ids = null;
+
+            if (array_key_exists('id', $requestBodyDecode)) {
+                $id = $requestBodyDecode['id'];   // Suppression d'un seul élément
+            }
+
+            if (array_key_exists('ids', $requestBodyDecode)) {
+                $ids = $requestBodyDecode['ids']; // Suppression groupée
+            }
+
+            if ($id !== null && $ids !== null) {
+                return new Response(json_encode([
+                    'message' => "Mettez soit la clé id ou la clé ids: la présence des deux clés id et ids n'est pas autorisée"
+                ]), Response::HTTP_BAD_REQUEST);
+            }
+
+            // Si on a des IDs, on supprime en groupé
+            if ($ids && \is_array($ids)) {
+                foreach ($ids as $idToDelete) {
+                    $entity = $this->entityManager
+                        ->getRepository(Programme::class)
+                        ->find($idToDelete)
+                    ;
+
+                    if ($entity) {
+                        // Enregistrement dans la table historique
+                        $historique = (new Historique())
+                            ->setOperation("Suppression d'un enregistrement")
+                            ->setNomTable("Programme")
+                            ->setIdTable($entity->getId())
+                            ->setUser($this->getUser())
+                        ;
+
+                        $this->entityManager->persist($historique);
+
+                        // Suppression de l'entité
+                        $this->controlDeletionEntityService->controlDeletion($entity);
+                    }
+                }
+            } else if ($id) { // Si on a un seul ID, on supprime cet élément
+                $entity = $this->entityManager
+                    ->getRepository(Programme::class)
+                    ->find($id)
+                ;
+
+                if ($entity) {
+                    // Enregistrement dans la table historique
+                    $historique = (new Historique())
+                        ->setOperation("Suppression d'un enregistrement")
+                        ->setNomTable("Programme")
+                        ->setIdTable($entity->getId())
+                        ->setUser($this->getUser())
+                    ;
+
+                    $this->entityManager->persist($historique);
+
+                    // Suppression de l'entité
+                    $this->controlDeletionEntityService->controlDeletion($entity);
+                }
+            } else {
+                return new Response(json_encode([
+                    'message' => 'Paramètres manquants: mettez soit id ou ids'
+                ]), Response::HTTP_BAD_REQUEST);
+            }
+
+            // Répondre avec une réponse 200 OK ou autre réponse appropriée
+            return new Response(json_encode([
+                'message' => 'Suppression réussie'
+            ]), Response::HTTP_OK);
+
+        } else {
+            // Le Content-Type n'est pas application/json
+            return new Response(json_encode([
+                'message' => 'Le Content-Type doit être: application/json'
+            ]), Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    #[Route('/programme_details/delete', name: 'app_programme_details_delete', methods: ['DELETE'])]
+    public function deleteProgrammeDetail(Request $request): Response
+    {
+        if ($request->headers->get('content-type') == "application/json") {
+            $requestBodyDecode = json_decode($request->getContent(), true);
+
+            // Récupérer les IDs des entités à supprimer
+            $id = null;
+            $ids = null;
+
+            if (array_key_exists('id', $requestBodyDecode)) {
+                $id = $requestBodyDecode['id'];   // Suppression d'un seul élément
+            }
+
+            if (array_key_exists('ids', $requestBodyDecode)) {
+                $ids = $requestBodyDecode['ids']; // Suppression groupée
+            }
+
+            if ($id !== null && $ids !== null) {
+                return new Response(json_encode([
+                    'message' => "Mettez soit la clé id ou la clé ids: la présence des deux clés id et ids n'est pas autorisée"
+                ]), Response::HTTP_BAD_REQUEST);
+            }
+
+            // Si on a des IDs, on supprime en groupé
+            if ($ids && \is_array($ids)) {
+                foreach ($ids as $idToDelete) {
+                    $entity = $this->entityManager
+                        ->getRepository(ProgrammeDetail::class)
+                        ->find($idToDelete)
+                    ;
+
+                    if ($entity) {
+                        // Enregistrement dans la table historique
+                        $historique = (new Historique())
+                            ->setOperation("Suppression d'un enregistrement")
+                            ->setNomTable("ProgrammeDetail")
+                            ->setIdTable($entity->getId())
+                            ->setUser($this->getUser())
+                        ;
+
+                        $this->entityManager->persist($historique);
+
+                        // Suppression de l'entité
+                        $this->controlDeletionEntityService->controlDeletion($entity);
+                    }
+                }
+            } else if ($id) { // Si on a un seul ID, on supprime cet élément
+                $entity = $this->entityManager
+                    ->getRepository(ProgrammeDetail::class)
+                    ->find($id)
+                ;
+
+                if ($entity) {
+                    // Enregistrement dans la table historique
+                    $historique = (new Historique())
+                        ->setOperation("Suppression d'un enregistrement")
+                        ->setNomTable("ProgrammeDetail")
+                        ->setIdTable($entity->getId())
+                        ->setUser($this->getUser())
+                    ;
+
+                    $this->entityManager->persist($historique);
+
+                    // Suppression de l'entité
+                    $this->controlDeletionEntityService->controlDeletion($entity);
+                }
+            } else {
+                return new Response(json_encode([
+                    'message' => 'Paramètres manquants: mettez soit id ou ids'
+                ]), Response::HTTP_BAD_REQUEST);
+            }
+
+            // Répondre avec une réponse 200 OK ou autre réponse appropriée
+            return new Response(json_encode([
+                'message' => 'Suppression réussie'
+            ]), Response::HTTP_OK);
+
+        } else {
+            // Le Content-Type n'est pas application/json
+            return new Response(json_encode([
+                'message' => 'Le Content-Type doit être: application/json'
+            ]), Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    #[Route('/type_directions/delete', name: 'app_type_directions_delete', methods: ['DELETE'])]
+    public function deleteTypeDirection(Request $request): Response
+    {
+        if ($request->headers->get('content-type') == "application/json") {
+            $requestBodyDecode = json_decode($request->getContent(), true);
+
+            // Récupérer les IDs des entités à supprimer
+            $id = null;
+            $ids = null;
+
+            if (array_key_exists('id', $requestBodyDecode)) {
+                $id = $requestBodyDecode['id'];   // Suppression d'un seul élément
+            }
+
+            if (array_key_exists('ids', $requestBodyDecode)) {
+                $ids = $requestBodyDecode['ids']; // Suppression groupée
+            }
+
+            if ($id !== null && $ids !== null) {
+                return new Response(json_encode([
+                    'message' => "Mettez soit la clé id ou la clé ids: la présence des deux clés id et ids n'est pas autorisée"
+                ]), Response::HTTP_BAD_REQUEST);
+            }
+
+            // Si on a des IDs, on supprime en groupé
+            if ($ids && \is_array($ids)) {
+                foreach ($ids as $idToDelete) {
+                    $entity = $this->entityManager
+                        ->getRepository(TypeDirection::class)
+                        ->find($idToDelete)
+                    ;
+
+                    if ($entity) {
+                        // Enregistrement dans la table historique
+                        $historique = (new Historique())
+                            ->setOperation("Suppression d'un enregistrement")
+                            ->setNomTable("TypeDirection")
+                            ->setIdTable($entity->getId())
+                            ->setUser($this->getUser())
+                        ;
+
+                        $this->entityManager->persist($historique);
+
+                        // Suppression de l'entité
+                        $this->controlDeletionEntityService->controlDeletion($entity);
+                    }
+                }
+            } else if ($id) { // Si on a un seul ID, on supprime cet élément
+                $entity = $this->entityManager
+                    ->getRepository(TypeDirection::class)
+                    ->find($id)
+                ;
+
+                if ($entity) {
+                    // Enregistrement dans la table historique
+                    $historique = (new Historique())
+                        ->setOperation("Suppression d'un enregistrement")
+                        ->setNomTable("TypeDirection")
                         ->setIdTable($entity->getId())
                         ->setUser($this->getUser())
                     ;
