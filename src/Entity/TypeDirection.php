@@ -70,6 +70,9 @@ class TypeDirection implements UserOwnedInterface
     #[ORM\Column]
     #[Groups([
         'read:TypeDirection',
+        'read:Direction',
+        'read:Dirigeant',
+        'read:Ministere',
     ])]
     private ?int $id = null;
 
@@ -77,6 +80,9 @@ class TypeDirection implements UserOwnedInterface
     #[Groups([
         'read:TypeDirection',
         'write:TypeDirection',
+        'read:Direction',
+        'read:Dirigeant',
+        'read:Ministere',
     ])]
     private ?string $titre = null;
 
@@ -84,6 +90,9 @@ class TypeDirection implements UserOwnedInterface
     #[Groups([
         'read:TypeDirection',
         'write:TypeDirection',
+        'read:Direction',
+        'read:Dirigeant',
+        'read:Ministere',
     ])]
     private ?string $description = null;
 
@@ -91,12 +100,18 @@ class TypeDirection implements UserOwnedInterface
     #[Groups([
         'read:TypeDirection',
         'write:TypeDirection',
+        'read:Direction',
+        'read:Dirigeant',
+        'read:Ministere',
     ])]
     private ?string $lien = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups([
         'read:TypeDirection',
+        'read:Direction',
+        'read:Dirigeant',
+        'read:Ministere',
     ])]
     private ?string $logo = null;
 
@@ -105,6 +120,9 @@ class TypeDirection implements UserOwnedInterface
 
     #[Groups([
         'read:TypeDirection',
+        'read:Direction',
+        'read:Dirigeant',
+        'read:Ministere',
     ])]
     public array $fichiers = [];
 
