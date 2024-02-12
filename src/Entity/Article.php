@@ -117,6 +117,8 @@ class Article implements UserOwnedInterface
     #[Groups([
         'read:Article',
         'write:Article',
+        'read:ArticleGalerie',
+        'read:ArticleTag',
     ])]
     private string|bool|null $visibility = null;
 
@@ -133,6 +135,8 @@ class Article implements UserOwnedInterface
     #[Groups([
         'read:Article',
         'write:Article',
+        'read:ArticleGalerie',
+        'read:ArticleTag',
     ])]
     private string|bool|null $isMention = null;
 
@@ -140,6 +144,8 @@ class Article implements UserOwnedInterface
     #[Groups([
         'read:Article',
         'write:Article',
+        'read:ArticleGalerie',
+        'read:ArticleTag',
     ])]
     private string|bool|null $isFlashinfo = null;
 
@@ -147,6 +153,8 @@ class Article implements UserOwnedInterface
     #[Groups([
         'read:Article',
         'write:Article',
+        'read:ArticleGalerie',
+        'read:ArticleTag',
     ])]
     private string|bool|null $category = null;
 
@@ -169,6 +177,8 @@ class Article implements UserOwnedInterface
 
     #[Groups([
         'read:Article',
+        'read:ArticleGalerie',
+        'read:ArticleTag',
     ])]
     public array $fichiers = [];
 
@@ -182,16 +192,20 @@ class Article implements UserOwnedInterface
     #[Groups([
         'read:Article',
         'write:Article',
+        'read:ArticleGalerie',
+        'read:ArticleTag',
     ])]
     private ?string $slug = null;
 
-//    #[Groups([
-//        'read:Article',
-//        'write:Article',
-//        'read:ArticleGalerie',
-//        'read:ArticleTag',
-//    ])]
-//    #[Assert\NotBlank]
+    #[ORM\ManyToOne(inversedBy: 'articles')]
+    #[Groups([
+        'read:Article',
+        'write:Article',
+        'read:ArticleGalerie',
+        'read:ArticleTag',
+    ])]
+    #[Assert\NotBlank]
+    private ?Menu $menu = null;
 
     public function __construct()
     {
@@ -417,6 +431,18 @@ class Article implements UserOwnedInterface
     public function setSlug(?string $slug): static
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getMenu(): ?Menu
+    {
+        return $this->menu;
+    }
+
+    public function setMenu(?Menu $menu): static
+    {
+        $this->menu = $menu;
 
         return $this;
     }

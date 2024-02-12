@@ -87,6 +87,9 @@ class Menu implements UserOwnedInterface
         'read:Header',
         'read:SousMenu',
         'read:Page',
+        'read:Article',
+        'read:ArticleGalerie',
+        'read:ArticleTag',
     ])]
     private ?int $id = null;
 
@@ -97,6 +100,9 @@ class Menu implements UserOwnedInterface
         'read:Header',
         'read:SousMenu',
         'read:Page',
+        'read:Article',
+        'read:ArticleGalerie',
+        'read:ArticleTag',
     ])]
     private ?string $name = null;
 
@@ -125,6 +131,9 @@ class Menu implements UserOwnedInterface
         'read:Header',
         'read:SousMenu',
         'read:Page',
+        'read:Article',
+        'read:ArticleGalerie',
+        'read:ArticleTag',
     ])]
     private ?string $description = null;
 
@@ -134,6 +143,9 @@ class Menu implements UserOwnedInterface
         'read:Header',
         'read:SousMenu',
         'read:Page',
+        'read:Article',
+        'read:ArticleGalerie',
+        'read:ArticleTag',
     ])]
     private ?string $imageCodeFichier = null;
 
@@ -142,6 +154,9 @@ class Menu implements UserOwnedInterface
         'read:Header',
         'read:SousMenu',
         'read:Page',
+        'read:Article',
+        'read:ArticleGalerie',
+        'read:ArticleTag',
     ])]
     public array $fichiers = [];
 
@@ -169,6 +184,9 @@ class Menu implements UserOwnedInterface
         'read:Header',
         'read:SousMenu',
         'read:Page',
+        'read:Article',
+        'read:ArticleGalerie',
+        'read:ArticleTag',
     ])]
     private ?string $lien = null;
 
@@ -179,6 +197,9 @@ class Menu implements UserOwnedInterface
         'read:Header',
         'read:SousMenu',
         'read:Page',
+        'read:Article',
+        'read:ArticleGalerie',
+        'read:ArticleTag',
     ])]
     private string|int|null $position = null;
 
@@ -189,6 +210,9 @@ class Menu implements UserOwnedInterface
         'read:Header',
         'read:SousMenu',
         'read:Page',
+        'read:Article',
+        'read:ArticleGalerie',
+        'read:ArticleTag',
     ])]
     private ?string $slug = null;
 
@@ -199,6 +223,9 @@ class Menu implements UserOwnedInterface
         'read:Header',
         'read:SousMenu',
         'read:Page',
+        'read:Article',
+        'read:ArticleGalerie',
+        'read:ArticleTag',
     ])]
     private ?string $formatPage = null;
 
@@ -216,12 +243,19 @@ class Menu implements UserOwnedInterface
         'read:Header',
         'read:SousMenu',
         'read:Page',
+        'read:Article',
+        'read:ArticleGalerie',
+        'read:ArticleTag',
     ])]
     private ?string $backgroundImage = null;
+
+    #[ORM\OneToMany(mappedBy: 'menu', targetEntity: Article::class)]
+    private Collection $articles;
 
     public function __construct()
     {
         $this->sousMenus = new ArrayCollection();
+        $this->articles = new ArrayCollection();
         $this->dateAjout = new \DateTimeImmutable();
         $this->dateModif = new \DateTime();
         $this->deleted = "0";
@@ -419,6 +453,36 @@ class Menu implements UserOwnedInterface
     public function setBackgroundImage(?string $backgroundImage): static
     {
         $this->backgroundImage = $backgroundImage;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Article>
+     */
+    public function getArticles(): Collection
+    {
+        return $this->articles;
+    }
+
+    public function addArticle(Article $article): static
+    {
+        if (!$this->articles->contains($article)) {
+            $this->articles->add($article);
+            $article->setMenu($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticle(Article $article): static
+    {
+        if ($this->articles->removeElement($article)) {
+            // set the owning side to null (unless already changed)
+            if ($article->getMenu() === $this) {
+                $article->setMenu(null);
+            }
+        }
 
         return $this;
     }
