@@ -177,12 +177,8 @@ class SousMenu implements UserOwnedInterface
     ])]
     public array $fichiers = [];
 
-    #[ORM\OneToMany(mappedBy: 'sousMenu', targetEntity: Article::class)]
-    private Collection $articles;
-
     public function __construct()
     {
-        $this->articles = new ArrayCollection();
         $this->dateAjout = new \DateTimeImmutable();
         $this->dateModif = new \DateTime();
         $this->deleted = "0";
@@ -302,36 +298,6 @@ class SousMenu implements UserOwnedInterface
     public function setFichiers(array $fichiers)
     {
         $this->fichiers = $fichiers;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Article>
-     */
-    public function getArticles(): Collection
-    {
-        return $this->articles;
-    }
-
-    public function addArticle(Article $article): static
-    {
-        if (!$this->articles->contains($article)) {
-            $this->articles->add($article);
-            $article->setSousMenu($this);
-        }
-
-        return $this;
-    }
-
-    public function removeArticle(Article $article): static
-    {
-        if ($this->articles->removeElement($article)) {
-            // set the owning side to null (unless already changed)
-            if ($article->getSousMenu() === $this) {
-                $article->setSousMenu(null);
-            }
-        }
 
         return $this;
     }

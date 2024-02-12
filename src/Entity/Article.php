@@ -185,15 +185,13 @@ class Article implements UserOwnedInterface
     ])]
     private ?string $slug = null;
 
-    #[ORM\ManyToOne(inversedBy: 'articles')]
-    #[Groups([
-        'read:Article',
-        'write:Article',
-        'read:ArticleGalerie',
-        'read:ArticleTag',
-    ])]
-    #[Assert\NotBlank]
-    private ?SousMenu $sousMenu = null;
+//    #[Groups([
+//        'read:Article',
+//        'write:Article',
+//        'read:ArticleGalerie',
+//        'read:ArticleTag',
+//    ])]
+//    #[Assert\NotBlank]
 
     public function __construct()
     {
@@ -419,18 +417,6 @@ class Article implements UserOwnedInterface
     public function setSlug(?string $slug): static
     {
         $this->slug = $slug;
-
-        return $this;
-    }
-
-    public function getSousMenu(): ?SousMenu
-    {
-        return $this->sousMenu;
-    }
-
-    public function setSousMenu(?SousMenu $sousMenu): static
-    {
-        $this->sousMenu = $sousMenu;
 
         return $this;
     }
