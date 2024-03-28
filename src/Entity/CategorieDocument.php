@@ -67,6 +67,7 @@ class CategorieDocument implements UserOwnedInterface
     #[Groups([
         'read:CategorieDocument',
         'read:DocumentCategorieDocument',
+        'read:Document',
     ])]
     private ?int $id = null;
 
@@ -75,6 +76,7 @@ class CategorieDocument implements UserOwnedInterface
         'read:CategorieDocument',
         'write:CategorieDocument',
         'read:DocumentCategorieDocument',
+        'read:Document',
     ])]
     private ?string $nom = null;
 
@@ -96,6 +98,9 @@ class CategorieDocument implements UserOwnedInterface
     private ?User $userModif = null;
 
     #[ORM\OneToMany(mappedBy: 'categorieDocument', targetEntity: DocumentCategorieDocument::class)]
+    #[Groups([
+        'read:CategorieDocument',
+    ])]
     private Collection $documentCategorieDocuments;
 
     public function __construct()

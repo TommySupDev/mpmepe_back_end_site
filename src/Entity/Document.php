@@ -69,6 +69,7 @@ class Document implements UserOwnedInterface
     #[Groups([
         'read:Document',
         'read:DocumentCategorieDocument',
+        'read:CategorieDocument',
     ])]
     private ?int $id = null;
 
@@ -76,6 +77,7 @@ class Document implements UserOwnedInterface
     #[Groups([
         'read:Document',
         'read:DocumentCategorieDocument',
+        'read:CategorieDocument',
     ])]
     private ?string $docCodeFichier = null;
 
@@ -84,6 +86,7 @@ class Document implements UserOwnedInterface
         'read:Document',
         'write:Document',
         'read:DocumentCategorieDocument',
+        'read:CategorieDocument',
     ])]
     private ?string $titre = null;
 
@@ -92,6 +95,7 @@ class Document implements UserOwnedInterface
         'read:Document',
         'write:Document',
         'read:DocumentCategorieDocument',
+        'read:CategorieDocument',
     ])]
     private string|bool|null $visibility = null;
 
@@ -100,6 +104,7 @@ class Document implements UserOwnedInterface
         'read:Document',
         'write:Document',
         'read:DocumentCategorieDocument',
+        'read:CategorieDocument',
     ])]
     private ?\DateTimeInterface $publicationDate = null;
 
@@ -107,6 +112,9 @@ class Document implements UserOwnedInterface
     private ?int $nbLiaison = null;
 
     #[ORM\OneToMany(mappedBy: 'document', targetEntity: DocumentCategorieDocument::class)]
+    #[Groups([
+        'read:Document',
+    ])]
     private Collection $documentCategorieDocuments;
 
     #[ORM\Column(nullable: true)]
@@ -114,6 +122,7 @@ class Document implements UserOwnedInterface
         'read:Document',
         'write:Document',
         'read:DocumentCategorieDocument',
+        'read:CategorieDocument',
     ])]
     private string|float|null $nbLecture = null;
 
@@ -122,6 +131,7 @@ class Document implements UserOwnedInterface
         'read:Document',
         'write:Document',
         'read:DocumentCategorieDocument',
+        'read:CategorieDocument',
     ])]
     private string|float|null $nbTelechargement = null;
 
@@ -129,12 +139,14 @@ class Document implements UserOwnedInterface
     #[Groups([
         'read:Document',
         'read:DocumentCategorieDocument',
+        'read:CategorieDocument',
     ])]
     private string|float|null $tailleFichier = null;
 
     #[Groups([
         'read:Document',
         'read:DocumentCategorieDocument',
+        'read:CategorieDocument',
     ])]
     public array $fichiers = [];
 
@@ -142,6 +154,7 @@ class Document implements UserOwnedInterface
     #[Groups([
         'read:Document',
         'read:DocumentCategorieDocument',
+        'read:CategorieDocument',
     ])]
     private ?string $extensionFichier = null;
 
