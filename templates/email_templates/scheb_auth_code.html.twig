@@ -1,0 +1,52 @@
+<div style="font-size: 20px; color: black;">
+    <div>
+        <img src="{{ asset('icons/image.jpg') }}" alt="Logo du MPMEPE" style="width: 100%; height: 80px;">
+    </div>
+    <p style="margin-bottom: 25px;">
+        <a href="https://pmepe.bj" target="_blank" style="text-decoration: none; color: #5780c0;" title="Cliquer pour visiter notre site web">
+            https://pmepe.bj
+        </a>
+    </p>
+    <p style="margin-bottom: 25px;">
+        Cotonou, le {{ 'now'|date('d/m/Y') }}
+    </p>
+    <p style="margin-bottom: 25px;">
+        Bonjour,
+    </p>
+    <p style="margin-bottom: 25px;">
+        Nous avons détecté une tentative de connexion à votre espace administrateur depuis un
+        appareil ou une adresse IP inconnue. Pour garantir la sécurité de votre compte, nous avons
+        besoin de confirmer que c'est bien vous.
+    </p>
+    <p style="margin-bottom: 25px;">
+        Code de Confirmation : <strong>{{ authCode }}</strong>
+    </p>
+    <p style="margin-bottom: 25px;">
+        Veuillez entrer ce code dans le formulaire de connexion pour confirmer votre identité. Ce
+        code est valide pour une durée de 10 minutes.
+    </p>
+    <p style="margin-bottom: 25px;">
+        Si vous n'êtes pas à l'origine de cette connexion, cela pourrait signifier que vos identifiants de
+        connexion sont potentiellement compromis. Dans ce cas, nous vous recommandons fortement de
+        modifier immédiatement votre mot de passe depuis votre hébergeur.
+    </p>
+    <p style="margin-bottom: 25px;">
+        Votre sécurité est notre priorité. Si vous avez des questions ou besoin d'assistance, n'hésitez pas
+        à contacter notre service client.
+    </p>
+    <p style="margin-bottom: 50px;">
+        Date de connexion : {{ 'now'|date('d/m/Y à H:i:s') }} <br>
+        Adresse IP : {{ app.request.clientIp }} <br>
+        Système utilisé : Windows
+    </p>
+    <p style="margin-bottom: 25px;">
+        Cordialement
+    </p>
+    <p>
+        Ceci est un mail automatique, vous ne pouvez pas y répondre. Contactez-nous directement via votre
+        espace Contact sur le site web
+        <a href="https://pmepe.bj/contact" target="_blank" style="text-decoration: none; color: #5780c0;" title="Cliquer pour nous contacter directement sur notre site web">
+            du Ministère des Petites et Moyennes Entreprises et de la Promotion de l'Emploi
+        </a>
+    </p>
+</div>

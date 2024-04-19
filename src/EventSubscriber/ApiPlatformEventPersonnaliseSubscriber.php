@@ -191,4 +191,13 @@ final class ApiPlatformEventPersonnaliseSubscriber implements EventSubscriberInt
         }
     }
 
+    /*
+     * Pour la newsletter:
+     * Tables concernées: page, article
+     * Le format pour une actualité: /actualite/${val.id}/${val.menu.name}
+     * Ex: /actualite/20/Communiqués
+     * Le format pour une page: /page/${datamenu.slug}/${datamenu.name}/${data.id}/${datamenu.id}
+     * Ex: /page/kdzhkjdhz/Programmes%20et%20Projets/4/36
+     */
+
 }

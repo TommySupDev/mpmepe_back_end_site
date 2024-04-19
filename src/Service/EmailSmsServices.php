@@ -26,17 +26,17 @@ class EmailSmsServices
      * Envoie un email
      *
      * @param string|array $to
-     * @param string $html
+     * @param string $htmlTemplate
      * @param string $sujet
-     * @param string $from
+     * @param string|null $from
      * @param string $fromName
-     * @param array<int,string> $data
+     * @param array $data
      * @param array $fichierJoint
      * @return void
      */
     public function sendEmail(
         string|array $to,
-        string $html,
+        string $htmlTemplate,
         string $sujet,
         string $from = null,
         string $fromName = '',
@@ -86,7 +86,7 @@ class EmailSmsServices
                 ->priority(Email::PRIORITY_HIGH)
                 ->subject($sujet)
                 //            ->text('Sending emails is fun again!')
-                ->htmlTemplate($html)
+                ->htmlTemplate($htmlTemplate)
                 ->context($data);
 
             // Permet de joindre des fichiers à envoyer par mail

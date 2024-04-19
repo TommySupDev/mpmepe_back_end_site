@@ -19,7 +19,8 @@ class FileUploader
         private EntityManagerInterface $entityManager,
         private FilesRepository $filesRepository,
         private GeneraleServices $generaleServices,
-        private RandomStringGeneratorServices $randomStringGeneratorServices
+        private RandomStringGeneratorServices $randomStringGeneratorServices,
+        private ImageOptimizerService $imageOptimizerService
     )
     {
     }
@@ -72,12 +73,6 @@ class FileUploader
         }
 
         $extension = $file->getClientOriginalExtension();
-        $fileSize = $file->getFileInfo()->getSize();
-
-        if ($fileSize === false) {
-            $fileSize = 0;
-        }
-
         $fileNewName = md5(uniqid()) . '.' . $extension;
 
         // Get folder location based on entity
@@ -87,7 +82,26 @@ class FileUploader
 
         try {
             $file->move($location, $fileNewName);
+            // Rédimensionnement de l'image
+            $this->imageOptimizerService->resize($location.$fileNewName);
+
+            // Une image ne doit pas dépasser 1Mo
+            $unMegaOctet = 1048576;
+            while (\filesize($location.$fileNewName) > $unMegaOctet) {
+                // Compression de l'image
+                $this->compressImage(
+                    $location.$fileNewName,
+                    $location.$fileNewName,
+                    75
+                );
+            }
         } catch (\Exception) {
+        }
+
+        $fileSize = \filesize($location.$fileNewName);
+
+        if ($fileSize === false) {
+            $fileSize = 0;
         }
 
         $file = new Files();
@@ -163,6 +177,41 @@ class FileUploader
         return $this->filesRepository->findBy([
             'referenceCode' => $filesCode,
         ]);
+    }
+
+    /**
+     * Custom function to compress image size and
+     * upload to the server
+     *
+     * @param $source  L'image à compresser
+     * @param string $destination  L'emplacement final de l'image
+     * @param int $quality  Le niveau de compression de l'image (De 0 à 100)
+     * @return void
+     */
+    public function compressImage($source, string $destination, int $quality): void
+    {
+        // Get image info
+        $imgInfo = \getimagesize($source);
+        $mime = $imgInfo['mime'];
+
+        // Create a new image from file
+        switch ($mime) {
+            case 'image/png':
+                $image = \imagecreatefrompng($source);
+                break;
+            case 'image/gif':
+                $image = \imagecreatefromgif($source);
+                break;
+            case 'image/jpeg':
+            case 'image/jpg':
+            default:
+                $image = \imagecreatefromjpeg($source);
+                break;
+        }
+
+        // Save image
+        imagejpeg($image, $destination, $quality);
+        imagedestroy($image);
     }
 
 }

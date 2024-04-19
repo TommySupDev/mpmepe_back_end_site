@@ -8,6 +8,7 @@ scheb_two_factor:
         # - Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken
     email:
         enabled: true
+        mailer: App\Service\CustomSchebMailerService
         digits: 6
         sender_email: solutechcorporate@gmail.com  # no-reply@test.com
         sender_name: Automatic Emails
