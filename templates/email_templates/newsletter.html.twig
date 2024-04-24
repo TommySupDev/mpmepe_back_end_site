@@ -1,84 +1,98 @@
 <div style="font-size: 18px; background-color: #eff0f4; margin: 20px; padding: 20px;">
     <div style="color: #6b6d73; margin-bottom: 20px;">
         Si vous ne souhaitez plus recevoir cette alerte e-mail :
-        <a href="#" target="_blank" style="text-decoration: none; color: #5780c0;" title="Cliquer pour vous désinscrire de la newsletter">
-            Se désinscrire
-        </a>
+        <form action="{{ sitelink ~ 'api/newsletters/desinscrire' }}" method="post" enctype="multipart/form-data">
+            <button type="submit" style="color: #5780c0; display: inline-block; background-color: inherit;" title="Cliquer pour vous désinscrire de la newsletter">
+                Se désinscrire
+            </button>
+        </form>
     </div>
 
     <hr style="border: 2px solid #9e9ea0;">
 
     <div style="color: #6b6d73; margin: 20px 0; padding: 20px 35px;">
-        <a href="#" target="_blank" style="text-decoration: none; color: inherit;" title="Cliquer pour voir les détails de cette actualité sur notre site">
-            <div style="display: flex; flex-direction: row; flex-wrap: nowrap; border-bottom: 1px solid #9e9ea0; padding-bottom: 15px; margin-bottom: 25px;">
-                <div style="width: 15%; margin-right: 15px;">
-                    <h2 style="color: black;">Festival : </h2>
-                    <p>
-                        Color Run à Anouanzélé
-                    </p>
+        {% for article in entityArticles %}
+            <a href="{{ sitelink ~ 'actualite/' ~ article.id ~ '/' ~ article.menu.name }}" target="_blank" style="text-decoration: none; color: inherit;" title="Cliquer pour voir les détails de cette actualité sur notre site">
+                <div style="display: flex; flex-direction: row; flex-wrap: nowrap; border-bottom: 1px solid #9e9ea0; padding-bottom: 15px; margin-bottom: 25px;">
+                    <div style="width: 15%; margin-right: 15px;">
+                        <h2 style="color: black;">{{ article.menu.name }} : </h2>
+                        <p>
+                            {{ article.titre }}
+                        </p>
+                    </div>
+                    <div>
+                        {% if article.imageCodeFichier != '' and article.imageCodeFichier is not null %}
+                            {% if getFilesByFileCode(article.imageCodeFichier, '1') == article.imageCodeFichier  %}
+                                <img src="{{ asset('icons/logo_mpmepe.png') }}" alt="Image d'entête de l'article" style="width: 100%; height: 180px;" />
+                            {% else %}
+                                <img src="{{ sitelink ~ getFilesByFileCode(article.imageCodeFichier, '1') }}" alt="Image d'entête de l'article" style="width: 100%; height: 180px;" />
+                            {% endif %}
+                        {% else %}
+                            <img src="{{ asset('icons/logo_mpmepe.png') }}" alt="Image d'entête de l'article" style="width: 100%; height: 180px;" />
+                        {% endif %}
+                    </div>
                 </div>
-                <div>
-                    <img src="{{ asset('icons/image.jpg') }}" alt="Image d'entête de l'article" style="width: 100%; height: 180px;">
-                </div>
-            </div>
-        </a>
+            </a>
+        {% endfor %}
 
-        <a href="#" target="_blank" style="text-decoration: none; color: inherit;" title="Cliquer pour voir les détails de cette actualité sur notre site">
-            <div style="display: flex; flex-direction: row; flex-wrap: nowrap; border-bottom: 1px solid #9e9ea0; padding-bottom: 15px; margin-bottom: 25px;">
-                <div style="width: 15%; margin-right: 15px;">
-                    <h2 style="color: black;">Expo : </h2>
-                    <p>
-                        << Synthèse >> à la LouiSimone Guirandou Gallery
-                    </p>
+        {% for page in entityPages %}
+            <a href="{{ sitelink ~ 'page/' ~ page.menu.slug ~ '/' ~ page.menu.name ~ '/' ~ page.id ~ '/' ~ page.menu.id }}" target="_blank" style="text-decoration: none; color: inherit;" title="Cliquer pour voir les détails de cette page sur notre site">
+                <div style="display: flex; flex-direction: row; flex-wrap: nowrap; border-bottom: 1px solid #9e9ea0; padding-bottom: 15px; margin-bottom: 25px;">
+                    <div style="width: 15%; margin-right: 15px;">
+                        <h2 style="color: black;">{{ page.menu.name }} : </h2>
+                        <p>
+                            {{ page.titre }}
+                        </p>
+                    </div>
+                    <div>
+                        {% if page.imageCodeFichier != '' and page.imageCodeFichier is not null %}
+                            {% if getFilesByFileCode(page.imageCodeFichier, '1') == page.imageCodeFichier  %}
+                                <img src="{{ asset('icons/logo_mpmepe.png') }}" alt="Image d'entête de la page" style="width: 100%; height: 180px;" />
+                            {% else %}
+                                <img src="{{ sitelink ~ getFilesByFileCode(page.imageCodeFichier, '1') }}" alt="Image d'entête de la page" style="width: 100%; height: 180px;" />
+                            {% endif %}
+                        {% else %}
+                            <img src="{{ asset('icons/logo_mpmepe.png') }}" alt="Image d'entête de la page" style="width: 100%; height: 180px;" />
+                        {% endif %}
+                    </div>
                 </div>
-                <div>
-                    <img src="{{ asset('icons/image.jpg') }}" alt="Image d'entête de l'article" style="width: 100%; height: 180px;">
-                </div>
-            </div>
-        </a>
-
-        <a href="#" target="_blank" style="text-decoration: none; color: inherit;" title="Cliquer pour voir les détails de cette actualité sur notre site">
-            <div style="display: flex; flex-direction: row; flex-wrap: nowrap; border-bottom: 1px solid #9e9ea0; padding-bottom: 15px; margin-bottom: 25px;">
-                <div style="width: 15%; margin-right: 15px;">
-                    <h2 style="color: black;">Le film du mois : </h2>
-                    <p>
-                        "Bob Marley : One love" au Majestic
-                    </p>
-                </div>
-                <div>
-                    <img src="{{ asset('icons/image.jpg') }}" alt="Image d'entête de l'article" style="width: 100%; height: 180px;">
-                </div>
-            </div>
-        </a>
+            </a>
+        {% endfor %}
 
         <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; align-items: center; padding-bottom: 15px; margin-bottom: 25px; margin-top: 70px;">
             <div style="width: 100%; text-align: center; font-size: 24px; margin-bottom: 15px;">
                 <h3>Nous suivre</h3>
             </div>
 
-            <div style="padding: 50px; border-right: 1px solid #9e9ea0;">
-                <a href="#" target="_blank" style="text-decoration: none; color: black;" title="Cliquer pour nous suivre sur Facebook">
-                    <img src="{{ asset('icons/social-facebook.svg') }}" alt="Logo Facebook" style="height: 50px; width: 50px; display: block; margin: auto;">
-                </a>
-            </div>
+            {% if lienFacebook is not null %}
+                <div style="padding: 50px; border-right: 1px solid #9e9ea0;">
+                    <a href="{{ lienFacebook.lien }}" target="_blank" style="text-decoration: none; color: black;" title="Cliquer pour nous suivre sur Facebook">
+                        <img src="{{ asset('icons/social-facebook.svg') }}" alt="Logo Facebook" style="height: 50px; width: 50px; display: block; margin: auto;">
+                    </a>
+                </div>
+            {% endif %}
+
+            {% if lienInstagram is not null %}
+                <div style="padding: 50px; border-right: 1px solid #9e9ea0;">
+                    <a href="{{ lienInstagram.lien }}" target="_blank" style="text-decoration: none; color: black;" title="Cliquer pour nous suivre sur Instagram">
+                        <img src="{{ asset('icons/social-instagram-outline.svg') }}" alt="Logo Instagram" style="height: 50px; width: 50px; display: block; margin: auto;">
+                    </a>
+                </div>
+            {% endif %}
 
             <div style="padding: 50px; border-right: 1px solid #9e9ea0;">
-                <a href="#" target="_blank" style="text-decoration: none; color: black;" title="Cliquer pour nous suivre sur Instagram">
-                    <img src="{{ asset('icons/social-instagram-outline.svg') }}" alt="Logo Instagram" style="height: 50px; width: 50px; display: block; margin: auto;">
-                </a>
-            </div>
-
-            <div style="padding: 50px; border-right: 1px solid #9e9ea0;">
-                <a href="#" target="_blank" style="text-decoration: none; color: black;" title="Cliquer pour visiter notre site web">
+                <a href="https://pmepe.bj" target="_blank" style="text-decoration: none; color: black;" title="Cliquer pour visiter notre site web">
                     <img src="{{ asset('icons/android-globe.svg') }}" alt="Logo Globe" style="height: 50px; width: 50px; display: block; margin: auto;">
                 </a>
             </div>
 
-            <div style="padding: 50px;">
-                <a href="#" target="_blank" style="text-decoration: none; color: black;" title="Cliquer pour nous suivre sur LinkedIn">
-                    <img src="{{ asset('icons/social-linkedin-outline.svg') }}" alt="Logo LinkedIn" style="height: 50px; width: 50px; display: block; margin: auto;">
-                </a>
-            </div>
+            {% if lienLinkedin is not null %}
+                <div style="padding: 50px;">
+                    <a href="{{ lienLinkedin.lien }}" target="_blank" style="text-decoration: none; color: black;" title="Cliquer pour nous suivre sur LinkedIn">
+                        <img src="{{ asset('icons/social-linkedin-outline.svg') }}" alt="Logo LinkedIn" style="height: 50px; width: 50px; display: block; margin: auto;">
+                    </a>
+                </div>
+            {% endif %}
         </div>
     </div>
 
@@ -88,9 +102,11 @@
         Vous recevez ce mail car vous êtes inscrit à notre liste de
         diffusion. Si vous souhaitez ne plus recevoir cette alerte e-mail,
         vous avez la possibilité de vous désinscrire :
-        <a href="#" target="_blank" style="text-decoration: none; color: #5780c0;" title="Cliquer pour vous désinscrire de la newsletter">
-            Se désinscrire
-        </a>
+        <form action="{{ sitelink ~ 'api/newsletters/desinscrire' }}" method="post" enctype="multipart/form-data">
+            <button type="submit" style="color: #5780c0; display: inline-block; background-color: inherit;" title="Cliquer pour vous désinscrire de la newsletter">
+                Se désinscrire
+            </button>
+        </form>
     </div>
 
     <div style="color: #6b6d73; margin-top: 40px;">

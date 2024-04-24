@@ -3,12 +3,19 @@
 namespace App\EventSubscriber;
 
 use ApiPlatform\Symfony\EventListener\EventPriorities;
+use App\Entity\Article;
 use App\Entity\ArticleGalerie;
 use App\Entity\Dirigeant;
 use App\Entity\Historique;
 use App\Entity\Menu;
+use App\Entity\Page;
 use App\Entity\SousMenu;
 use App\Entity\ValeurDemande;
+use App\Repository\ArticleRepository;
+use App\Repository\NewsletterRepository;
+use App\Repository\PageRepository;
+use App\Repository\SocialNetworkRepository;
+use App\Service\EmailSmsServices;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -20,7 +27,12 @@ final class ApiPlatformEventPersonnaliseSubscriber implements EventSubscriberInt
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private Security $security
+        private Security $security,
+        private EmailSmsServices $emailSmsServices,
+        private ArticleRepository $articleRepository,
+        private PageRepository $pageRepository,
+        private NewsletterRepository $newsletterRepository,
+        private SocialNetworkRepository $socialNetworkRepository,
     )
     {
     }
@@ -30,7 +42,8 @@ final class ApiPlatformEventPersonnaliseSubscriber implements EventSubscriberInt
         return [
             KernelEvents::VIEW => [
                 ['insertUserAjout', EventPriorities::POST_WRITE],
-                ['writeHistorique', EventPriorities::POST_WRITE]
+                ['writeHistorique', EventPriorities::POST_WRITE],
+                ['sendNewsletter', EventPriorities::POST_WRITE],
             ]
         ];
     }
@@ -192,12 +205,130 @@ final class ApiPlatformEventPersonnaliseSubscriber implements EventSubscriberInt
     }
 
     /*
-     * Pour la newsletter:
-     * Tables concernées: page, article
-     * Le format pour une actualité: /actualite/${val.id}/${val.menu.name}
+     * Le format pour un article: /actualite/${val.id}/${val.menu.name}
      * Ex: /actualite/20/Communiqués
      * Le format pour une page: /page/${datamenu.slug}/${datamenu.name}/${data.id}/${datamenu.id}
      * Ex: /page/kdzhkjdhz/Programmes%20et%20Projets/4/36
      */
+    public function sendNewsletter(ViewEvent $event): void
+    {
+        $entity = $event->getControllerResult();
+        $request = $event->getRequest();
+        $method = $request->getMethod();
+
+        if ($method !== Request::METHOD_POST) {
+            return;
+        }
+
+        if (\gettype($entity) !== "object") {
+            return;
+        }
+
+        if ($entity instanceof \stdClass || $entity instanceof \ArrayObject) {
+            return;
+        }
+
+        // Tables concernées par la newsletter: article et page
+        if ($entity instanceof Article || $entity instanceof Page) {
+            // Cas d'un ajout
+            if (!$request->request->get('resourceId')) {
+                $destinataires = [];
+                $entityArticles = [];
+                $entityPages = [];
+                $lienFacebook = null;
+                $lienInstagram = null;
+                $lienLinkedin = null;
+
+                $newslettersEntity = $this->newsletterRepository->findBy(
+                    [
+                        'deleted' => '0',
+                        'actif' => '1',
+                    ]
+                );
+
+                foreach ($newslettersEntity as $d) {
+                    $destinataires[] = trim($d->getEmail());
+                }
+
+                if ($entity instanceof Article) {
+                    $entityArticles = $this->articleRepository->findBy(
+                        [
+                            'deleted' => '0'
+                        ],
+                        [
+                            'id' => 'DESC'
+                        ],
+                        5
+                    );
+                }
+
+                if ($entity instanceof Page) {
+                    $entityPages = $this->pageRepository->findBy(
+                        [
+                            'deleted' => '0'
+                        ],
+                        [
+                            'id' => 'DESC'
+                        ],
+                        5
+                    );
+                }
+
+                $socialNetworksEntity = $this->socialNetworkRepository->findBy(
+                    [
+                        'deleted' => '0',
+                    ]
+                );
+
+                $patternFacebook = '/(facebook)+/';
+                foreach ($socialNetworksEntity as $d) {
+                    if (\preg_match($patternFacebook, mb_strtolower($d->getNom())) === 1) {
+                        $lienFacebook = $d;
+                        break;
+                    }
+                }
+
+                $patternInstagram = '/(instagram)+/';
+                foreach ($socialNetworksEntity as $d) {
+                    if (\preg_match($patternInstagram, mb_strtolower($d->getNom())) === 1) {
+                        $lienInstagram = $d;
+                        break;
+                    }
+                }
+
+                $patternLinkedin = '/(linkedin)+/';
+                foreach ($socialNetworksEntity as $d) {
+                    if (\preg_match($patternLinkedin, mb_strtolower($d->getNom())) === 1) {
+                        $lienLinkedin = $d;
+                        break;
+                    }
+                }
+
+                // Email data
+                $data = [
+                    'emailFrom' => "solutechcorporate@gmail.com",
+                    'fromName' => "Automatic Emails",
+                    'entityArticles' => $entityArticles,
+                    'entityPages' => $entityPages,
+                    'lienFacebook' => $lienFacebook,
+                    'lienInstagram' => $lienInstagram,
+                    'lienLinkedin' => $lienLinkedin,
+                ];
+
+                // Send email
+                if (\count($destinataires) > 0) {
+                    $this->emailSmsServices->sendEmail(
+                        $destinataires,
+                        'email_templates/newsletter.html.twig',
+                        "Nos récentes actualités",
+                        $data['emailFrom'],
+                        $data['fromName'],
+                        $data
+                    );
+                }
+
+            }
+        }
+    }
 
 }

@@ -21,7 +21,6 @@ class CustomSchebMailerService implements AuthCodeMailerInterface
             'emailFrom' => "solutechcorporate@gmail.com",
             'fromName' => "Automatic Emails",
             'authCode' => $authCode,
-            'ministereObject' => "",
         ];
 
         // Send email
