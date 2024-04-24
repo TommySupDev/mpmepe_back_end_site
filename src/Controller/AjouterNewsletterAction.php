@@ -6,6 +6,7 @@ use ApiPlatform\Serializer\SerializerContextBuilderInterface;
 use ApiPlatform\Symfony\Util\RequestAttributesExtractor;
 use App\Entity\Newsletter;
 use App\Repository\FilesRepository;
+use App\Repository\NewsletterRepository;
 use App\Service\FileUploader;
 use App\Service\RandomStringGeneratorServices;
 use Doctrine\ORM\EntityManagerInterface;
@@ -26,6 +27,7 @@ final class AjouterNewsletterAction extends AbstractController
         private FilesRepository $filesRepository,
         private SerializerInterface $serializer,
         private SerializerContextBuilderInterface $serializerContextBuilder,
+        private NewsletterRepository $newsletterRepository,
     )
     {
     }
@@ -46,9 +48,25 @@ final class AjouterNewsletterAction extends AbstractController
 
             // Nouvel enregistrement
             if (!$request->request->get('resourceId')) {
-                $this->entityManager->persist($newsletter);
-                $this->entityManager->flush();
-                $this->entityManager->refresh($newsletter);
+                // Contrôle de l'email pour les cas de réinscription
+                $emailUser = $newsletter->getEmail();
+                $existNewsletter = $this->newsletterRepository->findOneBy(
+                    [
+                        'email' => $emailUser
+                    ]
+                );
+
+                if ($existNewsletter !== null) {
+                    $existNewsletter->setActif("1");
+                    $this->entityManager->flush();
+                    $this->entityManager->refresh($existNewsletter);
+
+                    $newsletter = $existNewsletter;
+                } else {
+                    $this->entityManager->persist($newsletter);
+                    $this->entityManager->flush();
+                    $this->entityManager->refresh($newsletter);
+                }
 
             } // resourceId n'existe pas
 
