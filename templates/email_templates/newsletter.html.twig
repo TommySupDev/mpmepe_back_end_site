@@ -1,4 +1,4 @@
-<div style="font-size: 18px; background-color: #c5c9da8c; margin: 20px; padding: 20px;">
+<div style="font-size: 18px; background-color: #c5c9da8c; margin: 5px; padding: 20px;">
     <div style="color: #6b6d73; margin-bottom: 20px;">
         Si vous ne souhaitez plus recevoir cette alerte e-mail :
         <form action="{{ sitelink ~ 'api/newsletters/desinscrire' }}" method="post" enctype="multipart/form-data">
@@ -23,12 +23,12 @@
                     <div>
                         {% if article.imageCodeFichier != '' and article.imageCodeFichier is not null %}
                             {% if getFilesByFileCode(article.imageCodeFichier, '1') == article.imageCodeFichier  %}
-                                <img src="{{ asset('icons/logo_mpmepe.png') }}" alt="Image d'entête de l'article" style="width: 100%; height: 180px;" />
+                                <img src="{{ sitelink ~ asset('icons/logo_mpmepe.png') }}" alt="Image d'entête de l'article" style="width: 100%; height: 180px;" />
                             {% else %}
                                 <img src="{{ sitelink ~ getFilesByFileCode(article.imageCodeFichier, '1') }}" alt="Image d'entête de l'article" style="width: 100%; height: 180px;" />
                             {% endif %}
                         {% else %}
-                            <img src="{{ asset('icons/logo_mpmepe.png') }}" alt="Image d'entête de l'article" style="width: 100%; height: 180px;" />
+                            <img src="{{ sitelink ~ asset('icons/logo_mpmepe.png') }}" alt="Image d'entête de l'article" style="width: 100%; height: 180px;" />
                         {% endif %}
                     </div>
                 </div>
@@ -47,12 +47,12 @@
                     <div>
                         {% if page.imageCodeFichier != '' and page.imageCodeFichier is not null %}
                             {% if getFilesByFileCode(page.imageCodeFichier, '1') == page.imageCodeFichier  %}
-                                <img src="{{ asset('icons/logo_mpmepe.png') }}" alt="Image d'entête de la page" style="width: 100%; height: 180px;" />
+                                <img src="{{ sitelink ~ asset('icons/logo_mpmepe.png') }}" alt="Image d'entête de la page" style="width: 100%; height: 180px;" />
                             {% else %}
                                 <img src="{{ sitelink ~ getFilesByFileCode(page.imageCodeFichier, '1') }}" alt="Image d'entête de la page" style="width: 100%; height: 180px;" />
                             {% endif %}
                         {% else %}
-                            <img src="{{ asset('icons/logo_mpmepe.png') }}" alt="Image d'entête de la page" style="width: 100%; height: 180px;" />
+                            <img src="{{ sitelink ~ asset('icons/logo_mpmepe.png') }}" alt="Image d'entête de la page" style="width: 100%; height: 180px;" />
                         {% endif %}
                     </div>
                 </div>
@@ -67,7 +67,7 @@
             {% if lienFacebook is not null %}
                 <div style="padding: 50px; border-right: 1px solid #9e9ea0;">
                     <a href="{{ lienFacebook.lien }}" target="_blank" style="text-decoration: none; color: black;" title="Cliquer pour nous suivre sur Facebook">
-                        <img src="{{ asset('icons/social-facebook.svg') }}" alt="Logo Facebook" style="height: 50px; width: 50px; display: block; margin: auto;">
+                        <img src="{{ sitelink ~ asset('icons/social-facebook.svg') }}" alt="Logo Facebook" style="height: 50px; width: 50px; display: block; margin: auto;">
                     </a>
                 </div>
             {% endif %}
@@ -75,21 +75,21 @@
             {% if lienInstagram is not null %}
                 <div style="padding: 50px; border-right: 1px solid #9e9ea0;">
                     <a href="{{ lienInstagram.lien }}" target="_blank" style="text-decoration: none; color: black;" title="Cliquer pour nous suivre sur Instagram">
-                        <img src="{{ asset('icons/social-instagram-outline.svg') }}" alt="Logo Instagram" style="height: 50px; width: 50px; display: block; margin: auto;">
+                        <img src="{{ sitelink ~ asset('icons/social-instagram-outline.svg') }}" alt="Logo Instagram" style="height: 50px; width: 50px; display: block; margin: auto;">
                     </a>
                 </div>
             {% endif %}
 
             <div style="padding: 50px; border-right: 1px solid #9e9ea0;">
-                <a href="https://pmepe.bj" target="_blank" style="text-decoration: none; color: black;" title="Cliquer pour visiter notre site web">
-                    <img src="{{ asset('icons/android-globe.svg') }}" alt="Logo Globe" style="height: 50px; width: 50px; display: block; margin: auto;">
+                <a href="https://pmepe.gouv.bj" target="_blank" style="text-decoration: none; color: black;" title="Cliquer pour visiter notre site web">
+                    <img src="{{ sitelink ~ asset('icons/android-globe.svg') }}" alt="Logo Globe" style="height: 50px; width: 50px; display: block; margin: auto;">
                 </a>
             </div>
 
             {% if lienLinkedin is not null %}
                 <div style="padding: 50px;">
                     <a href="{{ lienLinkedin.lien }}" target="_blank" style="text-decoration: none; color: black;" title="Cliquer pour nous suivre sur LinkedIn">
-                        <img src="{{ asset('icons/social-linkedin-outline.svg') }}" alt="Logo LinkedIn" style="height: 50px; width: 50px; display: block; margin: auto;">
+                        <img src="{{ sitelink ~ asset('icons/social-linkedin-outline.svg') }}" alt="Logo LinkedIn" style="height: 50px; width: 50px; display: block; margin: auto;">
                     </a>
                 </div>
             {% endif %}
@@ -121,7 +121,7 @@
                 &copy; {{ 'now'|date('Y') }} MINISTÈRE DES PETITES ET MOYENNES ENTREPRISES ET DE LA PROMOTION DE L'EMPLOI
             </div>
             <div>
-                <img src="{{ asset('icons/logo_mpmepe.png') }}" alt="Logo du ministère" style="width: 100%; height: 80px;">
+                <img src="{{ sitelink ~ asset('icons/logo_mpmepe.png') }}" alt="Logo du ministère" style="width: auto; height: 70px;">
             </div>
         </div>
     </div>
